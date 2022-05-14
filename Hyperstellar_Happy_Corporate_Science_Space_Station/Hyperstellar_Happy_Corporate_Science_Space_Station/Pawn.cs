@@ -13,11 +13,12 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         private Color PAWNCOLOR;
         private int PAWNID;
         private Boolean isDelete;
-        Pawn(Point point , Color color, int id) {
-            pawnPosition= point;
-            PAWNCOLOR= color;
-            PAWNID= id;
-            isDelete= false;
+        Pawn(Point point, Color color, int id)
+        {
+            pawnPosition = point;
+            PAWNCOLOR = color;
+            PAWNID = id;
+            isDelete = false;
         }
 
 

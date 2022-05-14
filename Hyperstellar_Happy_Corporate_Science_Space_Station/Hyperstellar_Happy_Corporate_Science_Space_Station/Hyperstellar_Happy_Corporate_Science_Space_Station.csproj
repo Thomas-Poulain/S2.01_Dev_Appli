@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5DE1AA90-7C99-4A0A-8680-6FC65EDC43D3}</ProjectGuid>
+    <ProjectGuid>{D8AA6761-A652-43E2-929B-93E0F1628624}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Hyperstellar_Happy_Corporate_Science_Space_Station</RootNamespace>
     <AssemblyName>Hyperstellar_Happy_Corporate_Science_Space_Station</AssemblyName>
@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Card.cs" />
     <Compile Include="Player.cs" />
-    <Compile Include="¨Pawn.cs" />
+    <Compile Include="Pawn.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
