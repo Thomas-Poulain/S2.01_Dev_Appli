@@ -16,14 +16,14 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         private int MARKERID;
 
         private Boolean isDelete;
-        ScoreMarker(Point point, Color color, int id)
+        internal ScoreMarker(Point point, Color color, int id)
         {
             markerColor = color;
             markerPosition = point;
             MARKERID = id;
         }
 
-        public Point GetMarkerPosition() { return markerPosition}
+        public Point GetMarkerPosition() { return markerPosition; }
 
         public void SetMarkerPosition(Point point) { markerPosition = point; }
         public Color GetMarkerColor() { return markerColor; }

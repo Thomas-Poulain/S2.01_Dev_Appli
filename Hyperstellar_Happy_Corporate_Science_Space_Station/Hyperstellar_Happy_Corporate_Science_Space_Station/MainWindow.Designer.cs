@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "MainWindow";
             this.Text = "MainWindow";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainWindow_Paint);
             this.ResumeLayout(false);
 
         }

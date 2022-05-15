@@ -12,12 +12,14 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         private Color CARDCOLOR;
         private Point cardPosition;
         private int CARDID;
+        private Size size;
 
-        public Card(Point point, Color color, int position)
+        public Card(Point point, Color color, int id)
         {
             CARDCOLOR = color;
             cardPosition = point;
-            CARDID = position;
+            CARDID = id;
+            size = new Size(20, 40);
         }
 
         public Point GetCardPosition() { return cardPosition; }
@@ -28,7 +30,12 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
 
         public int GetCardID() { return CARDID; }
 
-
+        public void DrawCard(Graphics e) 
+        {
+            Pen p = new Pen(CARDCOLOR, 3);
+            Rectangle r = new Rectangle(cardPosition, size);
+            e.DrawRectangle(p, r);
+        }
 
     }
 }

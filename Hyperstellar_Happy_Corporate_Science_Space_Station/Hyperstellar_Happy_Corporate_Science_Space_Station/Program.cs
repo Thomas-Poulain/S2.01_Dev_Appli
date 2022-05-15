@@ -16,7 +16,10 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+
+            int numbOfPlayers = 1;
+            GameController gameController = new GameController(numbOfPlayers);  // New GameController, GameLogic
+            Application.Run(new MainWindow(gameController));
         }
     }
 }
