@@ -12,7 +12,7 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         private GameRubber currentRubber;
         private GameController gameController;
         private List<Player> playerList = new List<Player>();
-        public List<Card> deck = new List<Card>();
+        private List<Card> deck = new List<Card>();
         private List<Card> discarded = new List<Card>();
         int numberOfPlayers;
 
@@ -24,6 +24,11 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
             intializePlayers();
             initializeCards();
         }
+
+        public List<Card> GetDeck() { return deck; }
+        public void SetDeck(List<Card> deck) { this.deck = deck; }
+        public List<Card> GetDiscarded() { return discarded; }
+        public List<Player>GetPlayers() { return playerList; }
 
         private void intializePlayers() 
         {

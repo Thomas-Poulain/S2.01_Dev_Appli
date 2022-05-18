@@ -18,16 +18,21 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         internal MainWindow(GameController gameController)
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Maximized;
             this.gameController = gameController;
         }
 
         private void MainWindow_Paint(object sender, PaintEventArgs e)
         {
-            GameLogic gameLogic = gameController.GetGameLogic();
-            
-            foreach(Card card in gameLogic.deck)
+           
+        }
+
+        private void drawCurrentMain(int numberOfPlayers)
+        {
+            for (int i = 0; i < numberOfPlayers; i++)
             {
-                card.DrawCard(e.Graphics) ;
+
             }
         }
     }

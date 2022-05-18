@@ -18,5 +18,9 @@ namespace Hyperstellar_Happy_Corporate_Science_Space_Station
         }
 
         public GameLogic GetGameLogic() { return gamelogic; }
+
+        public MainWindow GetMainWindow() { return mainWindow; }
+
+
     }
 }
