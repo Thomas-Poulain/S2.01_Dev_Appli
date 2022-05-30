@@ -50,17 +50,40 @@ public class Application {
     }
     private void logIn(){
         boolean quit = false;
-            do {
-                int choice = ARR_userNumericInput(0, beginItems.size() - 1, "Choose an action");
-                quit = performAction(choice);
-            } while (!quit);
+        displayMenu(beginItems);
+        int choice = ARR_userNumericInput(0, beginItems.size() - 1, "Choose an action");
+        performActionConnection(choice);
     }
     
-    private void createAccount(){}
+    private void displayMenu(ArrayList<String> list) {
+        System.out.println("What do you want to do?");
+        displayList(list);
+    }
+    
+    private void displayList(ArrayList<String> list) {
+        if (!list.isEmpty()) {
+            for (int i = 0; i < list.size(); ++i) {
+                System.out.println("" + i + "." + list.get(i));
+            }
+        } else {
+            System.out.println("Giving up: no matches.");
+        }
+    }
+    
+    private void createAccount(){
+        String login = ARR_userStringInput("your login ?");
+        String name = ARR_userStringInput("your name ?");
+        String surname = ARR_userStringInput("your surname ?");
+        String nickname = ARR_userStringInput("your nickname ?");
+        String email = ARR_userStringInput("your email ?");
+        int typaAccount =  ARR_userNumericInput(0, 1, " 1. Owner \n 2. Tenant" );
+    }
     
     private void connection(){
-        
+        String login = ARR_userStringInput("your login ?");
+        toLogIn(login);
     }
+    
     void whoIsConnected(){}
 
     public void setCurrentConnected(Account currentConnected) {
@@ -92,6 +115,7 @@ public class Application {
      */
     void run() {
         boolean quit = false;
+        displayMenu(menuItems);
         do {
             int choice = ARR_userNumericInput(0, menuItems.size() - 1, "Choose an action");
             quit = performAction(choice);
@@ -118,15 +142,19 @@ public class Application {
         return input;
     }
     
-    private boolean performActionConnection(int choice){
-         boolean res = false;
+    private void performActionConnection(int choice){
         switch (choice)  {
             case 0:
-                res = true;
+                break;
+            case 1:
+                connection();
+                break;
+            case 2:
+                createAccount();
+                break;
+            default:
                 break;
         }
-        
-        return res;
     }
               
     private boolean performAction(int choice) {
