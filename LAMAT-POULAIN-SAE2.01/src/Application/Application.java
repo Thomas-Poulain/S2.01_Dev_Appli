@@ -20,20 +20,36 @@ public class Application {
     private Scanner scan = new Scanner(System.in);
     private ArrayList<String> menuItems = new ArrayList<>();
     private ArrayList<String> beginItems = new ArrayList<>();
+    private AccessAuction aAuction = new AccessAuction();
+    private AccessReservation aReservation = new AccessReservation(); 
 
     Application(){
         beginItems.add("Quit");
         beginItems.add("To log in");
         beginItems.add("Create an account");
         
-        logIn();
-       
+        
+        switch(currentConnected.getType()){
+            case ADMIN:
+                menuItems.add("Quit");
+                menuItems.add("List information on this account");
+                menuItems.add("Add a new admin account");
+                menuItems.add("List information on a account");
+                break;
+            case OWNER:
+                menuItems.add("Quit");
+                menuItems.add("List information on this account");
+                menuItems.add("add a auction");
+                break;
+            case TENANT:
+                menuItems.add("Quit");
+                menuItems.add("List information on this account");
+                menuItems.add("add a offer");
+                break;
+            default:
+                break; 
+        } 
         /*
-        gAccess = new GameAccess();
-        mAccess = new MemberAccess(gAccess);
-        lAccess = new LoanAccess(gAccess, mAccess);
-        */
-
         menuItems.add("Quit");
         menuItems.add("List all games in the library");
         menuItems.add("Add new board game");
@@ -47,6 +63,7 @@ public class Application {
         menuItems.add("Search for game by genre");
         menuItems.add("Return board game");
         menuItems.add("Return video game");
+        */
     }
     private void logIn(){
         boolean quit = false;
@@ -76,15 +93,21 @@ public class Application {
         String surname = ARR_userStringInput("your surname ?");
         String nickname = ARR_userStringInput("your nickname ?");
         String email = ARR_userStringInput("your email ?");
-        int typaAccount =  ARR_userNumericInput(0, 1, " 1. Owner \n 2. Tenant" );
+        int typeAccount =  ARR_userNumericInput(0, 1, " 1. Owner \n 2. Tenant" );
+        TypeOfAccount type;
+        if(typeAccount==0){
+            type=TypeOfAccount.OWNER;
+        }else{
+            type=TypeOfAccount.TENANT;
+        }
+        
+        createAccount(login, name, surname, nickname, email, 0, type);
     }
     
     private void connection(){
         String login = ARR_userStringInput("your login ?");
         toLogIn(login);
     }
-    
-    void whoIsConnected(){}
 
     public void setCurrentConnected(Account currentConnected) {
         this.currentConnected = currentConnected;
@@ -216,6 +239,7 @@ public class Application {
                 default:
                     break;
             }
+            currentConnected = accounts.get(accounts.size()-1);
         }
     }
     

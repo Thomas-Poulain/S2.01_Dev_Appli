@@ -9,6 +9,7 @@ package Application;
  * @author thoma
  */
 public class Main {
+    
     /**
      * @param args the command line arguments
      */
@@ -17,4 +18,5 @@ public class Main {
         //exemple
         app.run();
     }
+    
 }
