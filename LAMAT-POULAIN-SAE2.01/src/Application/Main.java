@@ -20,6 +20,7 @@ public class Main {
         putExempleDataIn(app);
         app.logIn();
         app.run();
+        System.out.println("disconnect");
     }
     public static void putExempleDataIn(Application app){
         app.createAdminAccount("root", "root", "root", "root", "root");

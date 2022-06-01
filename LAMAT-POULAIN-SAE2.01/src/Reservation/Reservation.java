@@ -2,7 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Application;
+package Reservation;
+
+import Auction.Month;
+import Account.Owner;
+import Property.Property;
+import Account.Tenant;
 
 /**
  *
@@ -59,6 +64,6 @@ public class Reservation {
         return "The description : " + PROPERTY.getDescription()
                 + "The Adress : " + PROPERTY.getAdress() + " in " + PROPERTY.getTown()
                 + "The month of reservation : " + MONTH
-                + "Reserv by " + OWNER.surname + " " + OWNER.name;
+                + "Reserv by " + OWNER.getSurname() + " " + OWNER.getName();
     }
 }

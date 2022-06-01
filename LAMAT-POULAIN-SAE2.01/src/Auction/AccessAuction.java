@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Application;
+package Auction;
 
+import Account.Owner;
+import Property.Property;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,8 @@ import java.util.ArrayList;
  */
 public class AccessAuction {
     private ArrayList<Auction> auctions = new ArrayList<>();
-    AccessAuction(){}
+    
+    public AccessAuction(){}
      
     public void addAAuction(Owner owner, Property property, Month month){
         auctions.add(new Auction(owner , property, month));

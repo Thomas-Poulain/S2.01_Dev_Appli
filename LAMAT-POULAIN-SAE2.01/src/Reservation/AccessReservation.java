@@ -2,8 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Application;
+package Reservation;
 
+import Auction.Month;
+import Account.Owner;
+import Property.Property;
+import Account.Tenant;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +18,7 @@ public class AccessReservation {
 
     private ArrayList<Reservation> reservations = new ArrayList<>();
 
-    AccessReservation() {
+    public AccessReservation() {
 
     }
 

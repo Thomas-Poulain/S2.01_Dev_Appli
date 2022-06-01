@@ -3,18 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/AccessReservation.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Reservation.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Admin.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Account/Tenant.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Property/Property.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Auction/Auction.java</file>
             <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Application.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/TypeOfAccount.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Property.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Auction.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Account.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Tenant.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Owner.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Account/TypeOfAccount.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Reservation/Reservation.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Account/Account.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Reservation/AccessReservation.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Auction/AccessAuction.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Account/Admin.java</file>
+            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Account/Owner.java</file>
             <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/Main.java</file>
-            <file>file:/C:/Users/thoma/Documents/SAE/S2.01_Dev_Appli/LAMAT-POULAIN-SAE2.01/src/Application/AccessAuction.java</file>
         </group>
     </open-files>
 </project-private>

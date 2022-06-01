@@ -2,17 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Application;
+package Account;
 
 /**
  *
- * @author thoma
+ * @author etd
  */
-public enum TypeOfProperty {
-    APARTMENT,
-    HOUSE,
-    VILLA,
-    CASTLE,
-    HUT,
-    OTHER;
+public enum TypeOfAccount {
+    ADMIN,
+    OWNER,
+    TENANT;    
 }

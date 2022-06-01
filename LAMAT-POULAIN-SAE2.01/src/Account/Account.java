@@ -2,20 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Application;
+package Account;
 
+import Account.Account;
+import Account.Admin;
 /**
  *
  * @author etd
  */
 public abstract class Account {
-    String login;
-    String name;
-    String surname;
-    String nickname;
-    String email;
-    int wallet;
-    TypeOfAccount type;
+    private String login;
+    private String name;
+    private String surname;
+    private String nickname;
+    private String email;
+    private int wallet;
+    private TypeOfAccount type;
 
     public String getLogin() {
         return login;
@@ -27,6 +29,34 @@ public abstract class Account {
 
     public String getSurname() {
         return surname;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setWallet(int wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setType(TypeOfAccount type) {
+        this.type = type;
     }
 
     public String getNickname() {
