@@ -27,49 +27,52 @@ public class Application {
         beginItems.add("Quit");
         beginItems.add("To log in");
         beginItems.add("Create an account");
-        
-        
-        switch(currentConnected.getType()){
-            case ADMIN:
-                menuItems.add("Quit");
-                menuItems.add("List information on this account");
-                menuItems.add("Add a new admin account");
-                menuItems.add("List information on a account");
-                break;
-            case OWNER:
-                menuItems.add("Quit");
-                menuItems.add("List information on this account");
-                menuItems.add("add a auction");
-                break;
-            case TENANT:
-                menuItems.add("Quit");
-                menuItems.add("List information on this account");
-                menuItems.add("add a offer");
-                break;
-            default:
-                break; 
-        } 
-        /*
-        menuItems.add("Quit");
-        menuItems.add("List all games in the library");
-        menuItems.add("Add new board game");
-        menuItems.add("Add new video game");
-        menuItems.add("Add new member");
-        menuItems.add("Borrow board game");
-        menuItems.add("Borrow video game");
-        menuItems.add("Check all loans");
-        menuItems.add("Search for board game by number of players");
-        menuItems.add("Search for video game by platform");
-        menuItems.add("Search for game by genre");
-        menuItems.add("Return board game");
-        menuItems.add("Return video game");
-        */
     }
-    private void logIn(){
+    
+    public void logIn(){
         boolean quit = false;
         displayMenu(beginItems);
         int choice = ARR_userNumericInput(0, beginItems.size() - 1, "Choose an action");
         performActionConnection(choice);
+    }
+    
+    public void createMenu(){
+        switch(currentConnected.getType()){
+            case ADMIN:
+                menuItems.add("Quit");
+                menuItems.add("Display all users");
+                menuItems.add("Delete a user");
+                menuItems.add("Edit a user");
+                menuItems.add("Remove a property");
+                menuItems.add("Edit a property");
+                menuItems.add("Display all properties");
+                menuItems.add("Display account's informations");
+                menuItems.add("Edit account't informations");
+                menuItems.add("Create an admin account");
+                menuItems.add("Display all auctions");
+                break;
+            case OWNER:
+                menuItems.add("Quit");
+                menuItems.add("Add a property");
+                menuItems.add("Remove a property");
+                menuItems.add("Edit a property");
+                menuItems.add("Display all properties");
+                menuItems.add("List account's informations");
+                menuItems.add("Edit account's informations");
+                break;
+            case TENANT:
+                menuItems.add("List account's informations");
+                menuItems.add("Edit account's informations");
+                menuItems.add("Make a bid");
+                menuItems.add("Fill wallet");
+                menuItems.add("List auctions");
+                menuItems.add("List bid history");
+                menuItems.add("List reservation");
+                menuItems.add("Display reservztion information");
+                break;
+            default:
+                break; 
+        } 
     }
     
     private void displayMenu(ArrayList<String> list) {
@@ -99,10 +102,13 @@ public class Application {
             type=TypeOfAccount.OWNER;
         }else{
             type=TypeOfAccount.TENANT;
-        }
-        
-        createAccount(login, name, surname, nickname, email, 0, type);
+        }   
+        createAccount(login, name, surname, nickname, email, type);
     }
+    
+    public void createAdminAccount(String login, String name, String surname, String nickname, String email){
+        accounts.add(new Admin(login, name, surname, nickname, email));
+    }   
     
     private void connection(){
         String login = ARR_userStringInput("your login ?");
@@ -138,6 +144,7 @@ public class Application {
      */
     void run() {
         boolean quit = false;
+        createMenu();
         displayMenu(menuItems);
         do {
             int choice = ARR_userNumericInput(0, menuItems.size() - 1, "Choose an action");
@@ -179,7 +186,110 @@ public class Application {
                 break;
         }
     }
-              
+    
+    private boolean performActionAdmin(int choice) {
+        boolean res = false;
+        switch (choice)  {
+            case 0:
+                res = true;
+                break;
+            /*case 1:
+                displayAllUsers();
+                break;
+            case 2:
+                deleteUser();
+                break;
+            case 3:
+                editUser();
+                break;
+            case 4:
+                removeAProperty();
+                break;
+            case 5:
+                editAProperty();
+                break;
+            case 6:
+                displayAllProperties();
+                break;
+            case 7:
+                displayInformations();
+                break;
+            case 8:
+                editInformations();
+                break;
+            case 9:
+                createAnOtherAdminAccount();
+                break;
+            case 10:
+                displayAllAuctions();
+                break;*/
+        }
+        return res;
+    }
+    
+    private boolean performActionOwner(int choice) {
+        boolean res = false;
+        switch (choice)  {
+            case 0:
+                res = true;
+                break;
+            /*case 4:
+                addProperty();
+                break;    
+            case 4:
+                removeAProperty();
+                break;
+            case 5:
+                editAProperty();
+                break;
+            case 6:
+                displayAllProperties();
+                break;
+            case 7:
+                displayInformations();
+                break;
+            case 8:
+                editInformations();
+                break;*/
+        }
+        return res;
+    }
+
+    private boolean performActionTenant(int choice){
+        boolean res = false;
+        switch (choice)  {
+            case 0:
+                res = true;
+                break;
+            case 1:
+                //lister information
+                break;
+            case 2:
+                //modifier information
+                break;
+            case 3:
+                // faire une offre
+                break;
+            case 4:
+                // remplir le porte monnaie
+                break;
+            case 5:
+                // voir les enchères
+                break;
+            case 6:
+                // lister historique des offres
+                break;
+            case 7:
+                // lister reservation 
+                break;
+            case 8:
+                // afficher détails reservation
+                break;
+        }
+        return res;
+    }
+    
+    
     private boolean performAction(int choice) {
         boolean res = false;
         switch (choice)  {
@@ -227,14 +337,14 @@ public class Application {
         return res;
     }
     
-    public void createAccount(String login, String name, String surname, String nickname, String email, int wallet, TypeOfAccount type){
+    public void createAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type){
         if(currentConnected==null){
             switch(type){
                 case OWNER:
-                    accounts.add(new Owner(login, name, surname, nickname, email, wallet));
+                    accounts.add(new Owner(login, name, surname, nickname, email));
                     break;
                 case TENANT:
-                    accounts.add(new Tenant(login, name, surname, nickname, email, wallet));
+                    accounts.add(new Tenant(login, name, surname, nickname, email));
                     break;
                 default:
                     break;
@@ -242,13 +352,7 @@ public class Application {
             currentConnected = accounts.get(accounts.size()-1);
         }
     }
-    
-    public void addAdminAccount(String login, String name, String surname, String nickname, String email, int wallet){
-        if(currentConnected.getType()==TypeOfAccount.ADMIN){
-            accounts.add(new Admin(login, name, surname, nickname, email, wallet));
-        }
-    }
-    
+
     public void toLogIn(String login){
         for(Account acc : accounts){
             if(acc.login.equals(login)){

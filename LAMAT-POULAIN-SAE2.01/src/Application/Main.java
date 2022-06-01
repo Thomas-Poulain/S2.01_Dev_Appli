@@ -4,6 +4,8 @@
  */
 package Application;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author thoma
@@ -13,10 +15,13 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+      public static void main(String[] args) {
         Application app = new Application();
-        //exemple
+        putExempleDataIn(app);
+        app.logIn();
         app.run();
     }
-    
+    public static void putExempleDataIn(Application app){
+        app.createAdminAccount("root", "root", "root", "root", "root");
+    }  
 }

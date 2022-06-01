@@ -13,13 +13,13 @@ import java.util.ArrayList;
 public class Owner extends Account{
     
     ArrayList<Property> properties = new ArrayList();
-    public Owner(String login, String name, String surname, String nickname, String email, int wallet) {
+    public Owner(String login, String name, String surname, String nickname, String email) {
         this.login=login;
         this.name=name;
         this.surname=surname;
         this.nickname=nickname;
         this.email=email;
-        this.wallet=wallet; 
+        this.wallet=0; 
         this.type=TypeOfAccount.OWNER;
     }
 

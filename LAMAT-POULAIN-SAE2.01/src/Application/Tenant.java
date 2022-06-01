@@ -10,7 +10,7 @@ package Application;
  */
 public class Tenant extends Account{
     
-    public Tenant(String login, String name, String surname, String nickname, String email, int wallet) {
+    public Tenant(String login, String name, String surname, String nickname, String email) {
         this.login=login;
         this.name=name;
         this.surname=surname;

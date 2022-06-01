@@ -14,7 +14,7 @@ public abstract class Account {
     String surname;
     String nickname;
     String email;
-    int wallet = 0;
+    int wallet;
     TypeOfAccount type;
 
     public String getLogin() {
