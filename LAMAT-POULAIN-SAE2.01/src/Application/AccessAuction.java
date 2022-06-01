@@ -17,4 +17,18 @@ public class AccessAuction {
     public void addAAuction(Owner owner, Property property, Month month){
         auctions.add(new Auction(owner , property, month));
     }
+
+    public ArrayList<Auction> getAuctions() {
+        return auctions;
+    }
+    
+    public void displayAllaActions(){
+        if(!auctions.isEmpty()){
+            for(Auction a : auctions){
+                a.toString();
+            }
+        }else{
+            System.out.println("No auctions find.");
+        }
+    }
 }

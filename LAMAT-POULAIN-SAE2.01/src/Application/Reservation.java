@@ -9,15 +9,25 @@ package Application;
  * @author Thomas
  */
 public class Reservation {
+
+    public Tenant getTENANT() {
+        return TENANT;
+    }
+
+    public void setTENANT(Tenant TENANT) {
+        this.TENANT = TENANT;
+    }
     private Owner OWNER;
+    private Tenant TENANT;
     private Property PROPERTY;
     private Month MONTH;
           
     
-    public Reservation(Owner owner, Property property, Month month){
+    public Reservation(Owner owner, Tenant tenant, Property property, Month month){
         OWNER=owner;
         PROPERTY = property;
         MONTH = month;
+        TENANT = tenant;
     }
 
     public Owner getOWNER() {
@@ -44,12 +54,7 @@ public class Reservation {
         this.MONTH = MONTH;
     }
     
-    public void displayInformation(){
-        this.toString();
-    }
-    
-    
-     @Override
+    @Override
     public String toString() {
         return "The description : " + PROPERTY.getDescription()
                 + "The Adress : " + PROPERTY.getAdress() + " in " + PROPERTY.getTown()

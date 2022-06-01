@@ -148,7 +148,17 @@ public class Application {
         displayMenu(menuItems);
         do {
             int choice = ARR_userNumericInput(0, menuItems.size() - 1, "Choose an action");
-            quit = performAction(choice);
+            switch(currentConnected.getType()){
+                case OWNER:
+                    quit=performActionOwner(choice);
+                    break;
+                case TENANT:
+                    quit=performActionTenant(choice);
+                    break;
+                case ADMIN:
+                    quit=performActionAdmin(choice);
+                    break;
+            }
         } while (!quit);
     }
     
@@ -193,36 +203,44 @@ public class Application {
             case 0:
                 res = true;
                 break;
-            /*case 1:
+            case 1:
                 displayAllUsers();
                 break;
+                
             case 2:
                 deleteUser();
                 break;
             case 3:
+                /*
                 editUser();
                 break;
+                */
             case 4:
                 removeAProperty();
                 break;
+                /*
             case 5:
                 editAProperty();
                 break;
+                */
             case 6:
+                
                 displayAllProperties();
                 break;
             case 7:
                 displayInformations();
                 break;
+                /*
             case 8:
                 editInformations();
                 break;
+                */
             case 9:
                 createAnOtherAdminAccount();
                 break;
             case 10:
                 displayAllAuctions();
-                break;*/
+                break;
         }
         return res;
     }
@@ -289,53 +307,6 @@ public class Application {
         return res;
     }
     
-    
-    private boolean performAction(int choice) {
-        boolean res = false;
-        switch (choice)  {
-            case 0:
-                res = true;
-                break;
-            /*case 1:
-                displayAllBoardGames();
-                displayAllVideoGames();
-                break;
-            case 2:
-                performNewBoardGameEntry();
-                break;
-            case 3:
-                performNewVideoGameEntry();
-                break;
-            case 4:
-                performNewMemberEntry();
-                break;
-            case 5:
-                performNewBoardGameLoan();
-                break;
-            case 6:
-                performNewVideoGameLoan();
-                break;
-            case 7:
-                displayAllLoans();
-                break;
-            case 8:
-                performBoardGameSearchByPlayers();
-                break;
-            case 9:
-                performVideoGameSearchByPlatform();
-                break;
-            case 10:
-                performSearchByGenre(); 
-                break;
-            case 11:
-                performBoardGameReturn();
-                break;
-            case 12:
-                performVideoGameReturn();
-                break;*/
-        }
-        return res;
-    }
     
     public void createAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type){
         if(currentConnected==null){
@@ -433,6 +404,84 @@ public class Application {
             if(currentConnected.equals(p.getOwner())){
                 p.setMaxCapacity(i);
             }
+        }
+    }
+    
+    public void displayAllUsers(){
+        if(!accounts.isEmpty()){
+            for(Account a : accounts){
+                a.displayAccountInformations();
+            }
+        }else{
+            System.out.println("No accounts found !");
+        }
+    }
+    
+    public void displayAllProperties(){
+        if(!properties.isEmpty()){
+            for(Property p : properties){
+                p.displayPropertyInformation();
+            }
+        }else{
+            System.out.println("No property available !");
+        }
+    }
+    
+    public void displayInformations(){
+        currentConnected.displayAccountInformations();
+    }
+    
+    public void createAnOtherAdminAccount(){
+        String login = ARR_userStringInput("login");
+        String name = ARR_userStringInput("name");
+        String surname = ARR_userStringInput("surname");
+        String nickname = ARR_userStringInput("nickname");
+        String email = ARR_userStringInput("email");
+        createAdminAccount(login, name, surname, nickname, email);
+        System.out.println("Your account was created with success !");
+    }
+    
+    public void displayAllAuctions(){
+        aAuction.displayAllaActions();
+    }
+    
+    public void removeAProperty(){
+        String adress = ARR_userStringInput("adress");
+        Property toDelete=null;
+        if(!properties.isEmpty()){
+            for(Property p:properties){
+                if(p.getAdress().equals(adress)){
+                    toDelete=p;
+                }
+            }
+            if(toDelete!=null){
+                properties.remove(toDelete);
+                System.out.println("Successfully deleted !");
+            }else{
+                System.out.println("No property find for the adress " + adress +".");
+            }
+        }else{
+             System.out.println("No properties found.");
+        }
+    }
+    
+    public void deleteUser(){
+        String user = ARR_userStringInput("user's login");
+        Account toDelete=null;
+        if(!accounts.isEmpty()){
+            for(Account a:accounts){
+                if(a.login.equals(user) && (currentConnected.getLogin()==user)){
+                    toDelete=a;
+                }
+            }
+            if(toDelete!=null){
+                accounts.remove(toDelete);
+                System.out.println("Successfully deleted !");
+            }else{
+               System.out.println("No user found for the login " + user +"."); 
+            }
+        }else{
+            System.out.println("No accounts found.");
         }
     }
 }

@@ -79,9 +79,18 @@ public class Property {
         this.maxCapacity = maxCapacity;
     }
 
+    public TypeOfProperty getTypeOfProperty() {
+        return typeOfProperty;
+    }
+
     public void setNominalPrice(int nominalPrice) {
         this.nominalPrice = nominalPrice;
     }
     
-    
+    public void displayPropertyInformation(){
+        System.out.println("-----");
+        System.out.println("It's a "+this.getTypeOfProperty() + " at the adress "+this.getAdress()+" in "+this.getTown());
+        System.out.println("Description : "+this.getDescription());
+        System.out.println("-----");
+    }
 }

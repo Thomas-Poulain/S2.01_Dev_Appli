@@ -54,11 +54,14 @@ public abstract class Account {
     }
     
     public void displayAccountInformations(){
+        System.out.println("-----");
         System.out.println("login :" + login);
         System.out.println("name :" + name);
         System.out.println("surname :" + surname);
         System.out.println("nickname :" + nickname);
         System.out.println("email :" + email);
         System.out.println("wallet :" + wallet);
+        System.out.println("-----"); 
     }
+    
 }

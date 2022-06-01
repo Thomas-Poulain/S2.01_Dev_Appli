@@ -11,11 +11,45 @@ import java.util.ArrayList;
  * @author Thomas
  */
 public class AccessReservation {
+
     private ArrayList<Reservation> reservations = new ArrayList<>();
-    AccessReservation(){
+
+    AccessReservation() {
+
     }
-     
-    public void addAReservation(Owner owner, Property property, Month month){
-        reservations.add(new Reservation(owner, property, month));
+
+    public void addAReservation(Owner owner, Tenant tenant, Property property, Month month) {
+        reservations.add(new Reservation(owner, tenant, property, month));
+    }
+
+    public ArrayList<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(ArrayList<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public void displayAllResvervations() {
+        for (Reservation r : reservations) {
+            r.toString();
+        }
+    }
+    
+    public void displayMyReservations(Tenant tenant){
+        for (Reservation r : reservations){
+            if(tenant == r.getTENANT()){
+                r.toString();
+            }   
+        }
+    }
+
+    public void foundAReservation(){
+        
+    }
+            
+            
+    private void diplayThisReservation(Reservation r) {
+        r.toString();
     }
 }
