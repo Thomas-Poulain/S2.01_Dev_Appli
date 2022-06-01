@@ -223,10 +223,8 @@ public class Application {
                 deleteUser();
                 break;
             case 3:
-            /*
                 editUser();
                 break;
-             */
             case 4:
                 removeAProperty();
                 break;
@@ -520,7 +518,7 @@ public class Application {
         String user = ARR_userStringInput("user's login");
         Account toDelete = null;
         if(currentConnected.getLogin() == user){
-            System.out.println("YOU ARE STUPID ? YOU ARE CONNECTED !");
+            System.out.println("You can't delete your own account !");
             return;
         }
         
@@ -534,6 +532,32 @@ public class Application {
                 accounts.remove(toDelete);
                 System.out.println("Successfully deleted !");
             } else {
+                System.out.println("No user found for the login " + user + ".");
+            }
+        } else {
+            System.out.println("No accounts found.");
+        }
+    }
+    
+    public void editUser(){
+        String user = ARR_userStringInput("user's login");
+        boolean find = false;
+        if (!accounts.isEmpty()) {
+            for (Account a : accounts) {
+                if (a.getLogin().equals(user)) {
+                    find=true;
+                   String name = ARR_userStringInput("user's name");
+                   String surname = ARR_userStringInput("user's surname");
+                   String nickname = ARR_userStringInput("user's nickname");
+                   String email = ARR_userStringInput("user's email");
+                   a.setName(name);
+                   a.setSurname(surname);
+                   a.setNickname(nickname);
+                   a.setEmail(email);
+                   System.out.println("Succsessfully editing !");
+                }
+            }
+            if(!find){
                 System.out.println("No user found for the login " + user + ".");
             }
         } else {
