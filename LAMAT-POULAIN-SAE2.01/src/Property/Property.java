@@ -91,7 +91,7 @@ public class Property {
     
     public void displayPropertyInformation(){
         System.out.println("-----");
-        System.out.println("It's a "+this.getTypeOfProperty() + " at the adress "+this.getAdress()+" in "+this.getTown());
+        System.out.println("It's a "+ this.getTypeOfProperty() + " at the adress "+this.getAdress()+" in "+this.getTown());
         System.out.println("Description : "+this.getDescription());
         System.out.println("-----");
     }

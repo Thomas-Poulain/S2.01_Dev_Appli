@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Auction.AccessAuction;
 import Auction.Auction;
+import Property.TypeOfProperty;
+import static Property.TypeOfProperty.HOUSE;
 import Reservation.AccessReservation;
 import Reservation.Reservation;
 
@@ -46,6 +48,7 @@ public class Application {
     }
 
     public void createMenu() {
+        if(currentConnected!=null){
         switch (currentConnected.getType()) {
             case ADMIN:
                 menuItems.add("Quit");
@@ -82,6 +85,7 @@ public class Application {
                 break;
             default:
                 break;
+        }
         }
     }
 
@@ -171,6 +175,7 @@ public class Application {
                     quit = performActionAdmin(choice);
                     break;
             }
+            displayMenu(menuItems);
         } while (!quit);
     }
 
@@ -228,11 +233,9 @@ public class Application {
             case 4:
                 removeAProperty();
                 break;
-            /*
             case 5:
                 editAProperty();
                 break;
-             */
             case 6:
                 displayAllProperties();
                 break;
@@ -259,13 +262,13 @@ public class Application {
                 res = true;
                 break;
             case 1:
-                //addProperty();
+                addProperty();
                 break;
             case 2:
                 removeAProperty();
                 break;
             case 3:
-                // editAProperty();
+                editAProperty();
                 break;
             case 4:
                 displayAllProperties();
@@ -347,16 +350,15 @@ public class Application {
     }
 
     public void deleteAProperty(Account currentConnected, Property p) {
+        ArrayList<Property> tmp = new ArrayList<>();
         if (currentConnected.getType() == TypeOfAccount.ADMIN) {
             properties.remove(p);
-            ArrayList<Property> tmp = new ArrayList<>();
             tmp = p.getOwner().getProperties();
             tmp.remove(p);
             p.getOwner().setProperties(tmp);
         } else if (currentConnected.getType() == TypeOfAccount.OWNER) {
             if (currentConnected.equals(p.getOwner())) {
                 properties.remove(p);
-                ArrayList<Property> tmp = new ArrayList<>();
                 tmp = p.getOwner().getProperties();
                 tmp.remove(p);
             }
@@ -517,7 +519,7 @@ public class Application {
     public void deleteUser() {
         String user = ARR_userStringInput("user's login");
         Account toDelete = null;
-        if(currentConnected.getLogin() == user){
+        if(currentConnected.getLogin().equals(user)){
             System.out.println("You can't delete your own account !");
             return;
         }
@@ -540,7 +542,7 @@ public class Application {
     }
     
     public void editUser(){
-        String user = ARR_userStringInput("user's login");
+        String user = ARR_userStringInput("user's login ");
         boolean find = false;
         if (!accounts.isEmpty()) {
             for (Account a : accounts) {
@@ -564,4 +566,64 @@ public class Application {
             System.out.println("No accounts found.");
         }
     }
+    
+        public void editAProperty(){
+        String adress = ARR_userStringInput("property's adress ");
+        boolean find=false;
+        if(!properties.isEmpty()){
+            for(Property p : properties){
+                if(p.getAdress().equals(adress)){
+                    String description = ARR_userStringInput("property's description ");
+                    p.setDescription(description);
+                    System.out.println("Succsessfully editing !");
+                }
+            }
+            if(!find){
+                System.out.println("No property found for the adress " + adress + ".");
+            }
+        }else{
+            System.out.println("No properties found.");
+        }
+    }
+        
+        public void addProperty(){
+            String town = ARR_userStringInput("property's town ");
+            String adress = ARR_userStringInput("property's adress ");
+            String description = ARR_userStringInput("property's description ");
+            TypeOfProperty.displayEnumTypeOfProperty();
+            TypeOfProperty type=null;
+            int choice = ARR_userNumericInput(1, 6, "Type of Property");
+            System.out.println(choice);
+            switch (choice) {
+                case 1:
+                    type=TypeOfProperty.APARTMENT;
+                    break;
+                case 2:
+                    type=TypeOfProperty.HOUSE;
+                    break;
+                case 3:  
+                    type=TypeOfProperty.VILLA;
+                    break;
+                case 4: 
+                    type=TypeOfProperty.CASTLE;
+                    break;
+                case 5:  
+                    type=TypeOfProperty.HUT;
+                    break;
+                case 6: 
+                    type=TypeOfProperty.OTHER;
+                    break;
+                default:
+                    break;
+            }
+            int maxCapacity = ARR_userNumericInput(1, 100, "Property's capacity :");
+            int nominalPrice = ARR_userNumericInput(1, 100, "nominalPrice (€) :");
+            Property p = new Property(town, adress, description, (Owner) currentConnected,maxCapacity,nominalPrice,type);
+            
+            Owner o = (Owner)currentConnected;
+            properties.add(p);
+            ArrayList<Property> tmp = o.getProperties();
+            tmp.add(p);
+            o.setProperties(tmp);
+        }
 }

@@ -15,4 +15,13 @@ public enum TypeOfProperty {
     CASTLE,
     HUT,
     OTHER;
+    
+    public static void displayEnumTypeOfProperty(){
+        System.out.println("1 : APARTMENT");
+        System.out.println("2 : HOUSE");
+        System.out.println("3 : VILLA");
+        System.out.println("4 : CASTLE");
+        System.out.println("5 : HUT");
+        System.out.println("6 : OTHER");
+    }
 }
