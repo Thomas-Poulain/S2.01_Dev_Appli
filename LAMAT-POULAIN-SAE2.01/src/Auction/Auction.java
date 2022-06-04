@@ -7,6 +7,9 @@ package Auction;
 import Auction.Offer;
 import Account.Owner;
 import Property.Property;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -17,6 +20,7 @@ public class Auction {
     private Owner OWNER;
     private Property PROPERTY;
     private Month MONTH;
+    private ArrayList<Offer> storyOfOffer = new ArrayList<>();
     
     Auction(Owner owner, Property property, Month month){
         this.OWNER = owner;
@@ -40,11 +44,34 @@ public class Auction {
         return MONTH;
     }
     
+    public void updateBestOffer(Offer o){
+        BestOffer bO = new BestOffer();
+        if(bO.compare(o, LastOffer) > 0){
+            setLastOffer(o);
+        }
+    }
+
+    public void setLastOffer(Offer LastOffer) {
+        this.LastOffer = LastOffer;
+    }
+
+    public void setOWNER(Owner OWNER) {
+        this.OWNER = OWNER;
+    }
+
+    public void setPROPERTY(Property PROPERTY) {
+        this.PROPERTY = PROPERTY;
+    }
+
+    public void setMONTH(Month MONTH) {
+        this.MONTH = MONTH;
+    }
+    
     @Override
     public String toString() {
         return "The property at " + this.getPROPERTY().getAdress()
                 + " at " + this.getMONTH()
-                + "rented by " + this.getOWNER() +"."
-                + "The actual winner is" + this.getOWNER().getNickname();
+                + "rented by " + this.getOWNER().getLogin() +"."
+                + "The actual winner is" + this.LastOffer.getTENANT().getLogin();
     }
 } 

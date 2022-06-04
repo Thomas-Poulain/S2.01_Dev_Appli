@@ -4,6 +4,7 @@
  */
 package Application;
 
+import Account.TypeOfAccount;
 import java.util.ArrayList;
 
 /**
@@ -24,5 +25,7 @@ public class Main {
     }
     public static void putExempleDataIn(Application app){
         app.createAdminAccount("root", "root", "root", "root", "root");
+        app.createAccount("owner", "owner", "owner", "owner", "owner", TypeOfAccount.OWNER);
+        app.createAccount("tenant", "tenant", "tenant", "tenant", "tenant", TypeOfAccount.TENANT);
     }  
 }

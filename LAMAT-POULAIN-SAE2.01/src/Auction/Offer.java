@@ -18,7 +18,7 @@ public class Offer {
     private int nbPers;
     private int nbNights;
     private int amount;
-    private Month month;
+    private Month month; 
     
     public Offer(Tenant tenant, int nbPers, int amount, Month month){
         this.TENANT=tenant;
