@@ -25,7 +25,7 @@ public class Auction {
     Auction(Owner owner, Property property, Month month){
         this.OWNER = owner;
         this.PROPERTY = property;
-        this.MONTH = month;
+        this.MONTH = month;   
     }
 
     public Offer getLastOffer() {
@@ -44,10 +44,28 @@ public class Auction {
         return MONTH;
     }
     
+    private void changeBestOffer(Offer o){
+        LastOffer.setWinner(false);
+        setLastOffer(o);
+        storyOfOffer.add(o);
+        o.setWinner(true);
+    }
+    
+    private boolean ItsTheFirst(){
+        if(LastOffer==null){return true;}
+        else{return false;}
+    }
+    
     public void updateBestOffer(Offer o){
+        if(ItsTheFirst()){
+            setLastOffer(o);
+            storyOfOffer.add(o);
+            o.setWinner(true);
+            return;
+        }
         BestOffer bO = new BestOffer();
         if(bO.compare(o, LastOffer) > 0){
-            setLastOffer(o);
+            changeBestOffer(o);
         }
     }
 

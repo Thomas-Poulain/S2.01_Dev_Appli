@@ -34,4 +34,16 @@ public class AccessAuction {
             System.out.println("No auctions find.");
         }
     }
+    
+    public void displayAuctionByOwner(Owner o){
+        if(!auctions.isEmpty()){
+            for(Auction a : auctions){
+                if(a.getOWNER().getLogin().equals(o.getLogin())){
+                    a.toString();
+                }      
+            }
+        }else{
+            System.out.println("No auctions find.");
+        }
+    }
 }

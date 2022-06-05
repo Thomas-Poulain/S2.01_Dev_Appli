@@ -15,37 +15,29 @@ import Account.Tenant;
  */
 public class Offer {
     private final Tenant TENANT;
-    private int nbPers;
-    private int nbNights;
     private int amount;
-    private Month month; 
+    private boolean winner;
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
     
-    public Offer(Tenant tenant, int nbPers, int amount, Month month){
+    public Offer(Tenant tenant, int amount){
         this.TENANT=tenant;
-        this.nbPers=nbPers;
         this.amount=amount;
         roundAmount();
-        this.month=month;
     }
 
     public Tenant getTENANT() {
         return TENANT;
     }
 
-    public int getNbPers() {
-        return nbPers;
-    }
-
-    public int getNbNights() {
-        return nbNights;
-    }
-
     public int getAmount() {
         return amount;
-    }
-
-    public Month getMonth() {
-        return month;
     }
     
     private void roundAmount(){

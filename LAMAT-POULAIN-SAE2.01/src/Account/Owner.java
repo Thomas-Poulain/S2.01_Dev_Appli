@@ -13,8 +13,7 @@ import java.util.ArrayList;
  * @author etd
  */
 public class Owner extends Account{
-    
-    ArrayList<Property> properties = new ArrayList();
+
     public Owner(String login, String name, String surname, String nickname, String email) {
        this.setLogin(login);
         this.setName(name);
@@ -23,15 +22,5 @@ public class Owner extends Account{
         this.setEmail(email);
         this.setWallet(0);
         this.setType(TypeOfAccount.OWNER);
-    }
-
-    public ArrayList<Property> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(ArrayList<Property> properties) {
-        this.properties = properties;
-    }
-    
-    
+    }   
 }

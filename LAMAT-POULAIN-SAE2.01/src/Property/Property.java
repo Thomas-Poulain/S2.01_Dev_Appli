@@ -11,6 +11,7 @@ import Account.Owner;
  * @author etd
  */
 public class Property {
+    private String name;
     private String town;
     private String adress;
     private String description;
@@ -20,13 +21,22 @@ public class Property {
     private int nominalPrice;
     private TypeOfProperty typeOfProperty;
 
-    public Property(String town,String adress,String description, Owner owner,int maxCapacity, int nominalPrice, TypeOfProperty typeOfProperty) {
+    public Property(String name, String town,String adress,String description, Owner owner,int maxCapacity, int nominalPrice, TypeOfProperty typeOfProperty) {
         this.town=town;
         this.adress=adress;
         this.description=description;
         this.owner=owner;
         this.maxCapacity=maxCapacity;
         this.nominalPrice=nominalPrice;
+        this.name =name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTown() {
@@ -91,7 +101,7 @@ public class Property {
     
     public void displayPropertyInformation(){
         System.out.println("-----");
-        System.out.println("It's a "+ this.getTypeOfProperty() + " at the adress "+this.getAdress()+" in "+this.getTown());
+        System.out.println("It's a "+ this.getTypeOfProperty() + " in "+this.getTown());
         System.out.println("Description : "+this.getDescription());
         System.out.println("-----");
     }

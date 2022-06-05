@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Auction.AccessAuction;
 import Auction.Auction;
+import Auction.Month;
 import Property.TypeOfProperty;
 import static Property.TypeOfProperty.HOUSE;
 import Reservation.AccessReservation;
 import Reservation.Reservation;
+import java.util.HashSet;
 
 /**
  *
@@ -246,7 +248,7 @@ public class Application {
                 removeAProperty();
                 break;
             case 5:
-                editAProperty();
+                editProperty();
                 break;
             case 6:
                 displayAllProperties();
@@ -280,7 +282,7 @@ public class Application {
                 removeAProperty();
                 break;
             case 3:
-                editAProperty();
+                editProperty();
                 break;
             case 4:
                 displayAllProperties();
@@ -292,7 +294,7 @@ public class Application {
                 editInformations();
                 break;
             case 7:
-                //createAuction();
+                createAuction();
                 break;
         }
         return res;
@@ -311,7 +313,7 @@ public class Application {
                 editInformations();
                 break;
             case 3:
-                // faire une offre
+                putOffer();
                 break;
             case 4:
                 fillWallet();
@@ -332,6 +334,11 @@ public class Application {
         return res;
     }
 
+    public void putOffer(){
+        Property property = foundPropertyByName();
+        
+    }
+    
     public void createAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type) {
         switch (type) {
             case OWNER:
@@ -371,7 +378,7 @@ public class Application {
         currentConnected = null;
         System.out.println("Disconnected");
     }
-
+/*
     public void deleteAProperty(Account currentConnected, Property p) {
         ArrayList<Property> tmp = new ArrayList<>();
         if (currentConnected.getType() == TypeOfAccount.ADMIN) {
@@ -387,7 +394,7 @@ public class Application {
             }
         }
     }
-
+*/
     public void changePropertyDesc(Account currentConnected, Property p, String s) {
         if (currentConnected.getType() == TypeOfAccount.ADMIN) {
             p.setDescription(s);
@@ -591,7 +598,7 @@ public class Application {
         mess.add("user's email");
         displayList(mess);
 
-        int choice = ARR_userNumericInput(0, 3, "Choose an action");
+        int choice = ARR_userNumericInput(0, mess.size()-1, "Choose an action");
 
         String newest = ARR_userStringInput("The newest");
 
@@ -611,38 +618,187 @@ public class Application {
         }
     }
 
-    public void editAProperty() {
-        String adress = ARR_userStringInput("property's adress ");
-        boolean find = false;
-        if (!properties.isEmpty()) {
-            for (Property p : properties) {
-                if (p.getAdress().equals(adress)) {
-                    String description = ARR_userStringInput("property's description ");
-                    p.setDescription(description);
-                    System.out.println("Succsessfully editing !");
+    
+     public ArrayList<String> searchPropertyByName(String name){
+        ArrayList<String> nameList = new ArrayList<>();
+        for(Property p : properties){
+            if(currentConnected.getType() == TypeOfAccount.ADMIN){
+               nameList.add(p.getName());
+            }else{
+                if(p.getOwner() == currentConnected)
+                {
+                   nameList.add(p.getName());
                 }
             }
-            if (!find) {
-                System.out.println("No property found for the adress " + adress + ".");
+        }
+        return searchListByPart(name, nameList);
+    }
+    
+    public Property foundPropertyByName(){
+        String partName = ARR_userStringInput("name property");
+        ArrayList<String> name = searchPropertyByAdress(partName);
+        if (name.isEmpty()) {
+            return null;
+        }
+        displayList(name);
+        String a = name.get(ARR_userNumericInput(0, name.size() - 1, "Which name ?"));
+        
+        Property property = null;
+        for(Property p : properties)
+        {
+            if(p.getAdress().equals(a)){
+                property = p;
             }
-        } else {
-            System.out.println("No properties found.");
+        }
+        return property;
+    }
+    
+    public ArrayList<Property> GetPropertyForAOwner(){
+        ArrayList propertiesByOwner = new ArrayList<>();
+        for(Property p : properties){
+            if(currentConnected.getLogin().equals(p.getOwner().getLogin())){
+                propertiesByOwner.add(p);
+            }
+        }
+        return propertiesByOwner;
+    }
+    
+    public ArrayList<String> searchPropertyByAdress(String adress){
+        ArrayList<String> adressList = new ArrayList<>();
+        for(Property p : properties){
+            if(currentConnected.getType() == TypeOfAccount.ADMIN){
+               adressList.add(p.getAdress());
+            }else{
+                if(p.getOwner() == currentConnected)
+                {
+                   adressList.add(p.getAdress());
+                }
+            }
+        }
+        return searchListByPart(adress, adressList);
+    }
+    
+    public Property foundPropertyByAdress(){
+        String partName = ARR_userStringInput("adress property");
+        ArrayList<String> adress = searchPropertyByAdress(partName);
+        if (adress.isEmpty()) {
+            return null;
+        }
+        displayList(adress);
+        String a = adress.get(ARR_userNumericInput(0, adress.size() - 1, "Which adress ?"));
+        
+        Property property = null;
+        for(Property p : properties)
+        {
+            if(p.getAdress().equals(a)){
+                property = p;
+            }
+        }
+        return property;
+    }
+    
+    public void editProperty() {
+        Property property = foundPropertyByAdress();
+        if(!(property == null)){
+             editPropertyChoice(property);
+        }
+    }
+    
+    private void editPropertyChoice(Property property){
+        System.out.println("What do you want to change ?");
+        ArrayList<String> mess = new ArrayList<>();
+        mess.add("property name");
+        mess.add("property adress");
+        mess.add("property town");
+        mess.add("property max capacity");
+        mess.add("property nominal price");
+        mess.add("property description");
+        displayList(mess);
+
+        int choice = ARR_userNumericInput(0, 3, "Choose an action");
+
+        String newest = ARR_userStringInput("The newest");
+        int i;
+        switch (choice) {
+            case 0:
+                property.setName(newest);
+                break;
+            case 1:
+                property.setAdress(newest);
+                break;
+            case 2:
+                property.setTown(newest);
+                break;
+            case 3:
+                i=Integer.parseInt(newest);  
+                property.setMaxCapacity(i);
+                break;
+            case 4:
+                i=Integer.parseInt(newest);
+                property.setNominalPrice(i);
+                break;
+            case 5:
+                property.setDescription(newest);
+                break;
         }
     }
     
     public void createAuction(){
-        String town = ARR_userStringInput("property's adress ");
-        
+        Property property = foundPropertyByName();
+        Month.displayEnumTypeOfMonth();
+        int choice = ARR_userNumericInput(1, 12, "Which month ? ");
+        Month month = null;
+        switch (choice) {
+            case 1:
+                month = Month.January;
+                break;
+            case 2:
+                month = Month.February;
+                break;
+            case 3:
+                month = Month.March;
+                break;
+            case 4:
+                month = Month.April;
+                break;
+            case 5:
+                month = Month.May;
+                break;
+            case 6:
+                month = Month.June;
+                break;
+            case 7:
+                month = Month.July;
+                break;
+            case 8 :
+                month = Month.August;
+                break;
+            case 9:
+                month = Month.September;
+                break;
+            case 10:
+                month = Month.October;
+                break;
+            case 11:
+                month = Month.November;
+                break;
+            case 12:
+                month = Month.December;
+                break;
+            default:
+                break;
+        }
+        aAuction.addAAuction((Owner) currentConnected, property, month);
     }
 
     public void addProperty() {
+        String name = ARR_userStringInput("property's name");
         String town = ARR_userStringInput("property's town ");
         String adress = ARR_userStringInput("property's adress ");
         String description = ARR_userStringInput("property's description ");
         TypeOfProperty.displayEnumTypeOfProperty();
         TypeOfProperty type = null;
         int choice = ARR_userNumericInput(1, 6, "Type of Property");
-        System.out.println(choice);
         switch (choice) {
             case 1:
                 type = TypeOfProperty.APARTMENT;
@@ -667,13 +823,8 @@ public class Application {
         }
         int maxCapacity = ARR_userNumericInput(1, 100, "Property's capacity :");
         int nominalPrice = ARR_userNumericInput(1, 100, "nominalPrice (€) :");
-        Property p = new Property(town, adress, description, (Owner) currentConnected, maxCapacity, nominalPrice, type);
-
-        Owner o = (Owner) currentConnected;
+        Property p = new Property(name, town, adress, description, (Owner) currentConnected, maxCapacity, nominalPrice, type);
         properties.add(p);
-        ArrayList<Property> tmp = o.getProperties();
-        tmp.add(p);
-        o.setProperties(tmp);
     }
     
     private ArrayList<String> searchListByPart(String part, ArrayList<String> list) {
