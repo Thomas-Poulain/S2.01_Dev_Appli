@@ -16,6 +16,7 @@ import java.util.Set;
  * @author Thomas
  */
 public class Auction {
+    private Boolean isClose;
     private Offer LastOffer;
     private Owner OWNER;
     private Property PROPERTY;
@@ -26,8 +27,25 @@ public class Auction {
         this.OWNER = owner;
         this.PROPERTY = property;
         this.MONTH = month;   
+        this.isClose = false;
     }
 
+     public Boolean getIsClose() {
+        return isClose;
+    }
+
+    public void setIsClose(Boolean isClose) {
+        this.isClose = isClose;
+    }
+
+    public ArrayList<Offer> getStoryOfOffer() {
+        return storyOfOffer;
+    }
+
+    public void setStoryOfOffer(ArrayList<Offer> storyOfOffer) {
+        this.storyOfOffer = storyOfOffer;
+    }
+    
     public Offer getLastOffer() {
         return LastOffer;
     }

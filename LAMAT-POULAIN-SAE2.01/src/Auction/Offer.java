@@ -16,7 +16,7 @@ import Account.Tenant;
 public class Offer {
     private final Auction AUCTION;
     private final Tenant TENANT;
-    private int amount;
+    private final int AMOUNT;
     private boolean winner;
 
     public boolean isWinner() {
@@ -29,22 +29,39 @@ public class Offer {
     
     public Offer(Tenant tenant, int amount, Auction auction){
         this.TENANT=tenant;
-        this.amount=amount;
+        this.AMOUNT=amount;
         this.AUCTION=auction;
-        roundAmount();
     }
 
     public Tenant getTENANT() {
         return TENANT;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getAMOUNT() {
+        return AMOUNT;
     }
-    
-    private void roundAmount(){
-        while(amount%10!=0) {
-            amount+=1;
-        }     
+   
+    @Override
+    public String toString(){
+        String mess = TENANT.getLogin() + " on " + AUCTION.getPROPERTY() + " in " + AUCTION.getMONTH() + " at " + AMOUNT;
+        if(AUCTION.getIsClose()){
+            if(isWinner()){
+                mess += " have won, congrulation !";
+            }else{
+                mess += " have loose";
+            }
+        }
+        else{
+            if(isWinner()){
+                mess += " is winning";
+            }else{
+                mess += " have loose";
+            }
+        }
+        return mess;
+    }
+
+    public Auction getAUCTION() {
+        return AUCTION;
     }
 }

@@ -16,7 +16,14 @@ public class AccessAuction {
     private ArrayList<Auction> auctions = new ArrayList<>();
     
     public AccessAuction(){}
-     
+    
+    public void addOffer(Offer offer, Auction auction){
+        for(Auction a : auctions){
+            if(a.equals(auction)){
+                a.updateBestOffer(offer);
+            }
+        }
+    }
     public void addAAuction(Owner owner, Property property, Month month){
         auctions.add(new Auction(owner , property, month));
     }

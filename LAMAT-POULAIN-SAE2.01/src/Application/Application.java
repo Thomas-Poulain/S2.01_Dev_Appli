@@ -295,6 +295,9 @@ public class Application {
             case 7:
                 createAuction();
                 break;
+            case 8:
+                displayOffers();
+                break;
         }
         return res;
     }
@@ -329,8 +332,74 @@ public class Application {
             case 8:
                 // afficher détails reservation
                 break;
+            case 9:
+                displayAllProperties();
+                break;
+            case 10:
+                displayMyOffer();
+                break;
         }
         return res;
+    }
+    
+    public void displayMyOffer(){
+        ArrayList<Offer> offers = aOffer.getOffers();
+        for(Offer o : offers){
+            if(o.getTENANT().equals(currentConnected)){
+                o.toString();
+            }
+        }
+    }
+    
+    public void displayOffers(){
+        Property property = foundPropertyByName();
+        Month.displayEnumTypeOfMonth();
+        int choice = ARR_userNumericInput(1, 12, "Which month ? ");
+        Month month = null;
+        switch (choice) {
+            case 1:
+                month = Month.January;
+                break;
+            case 2:
+                month = Month.February;
+                break;
+            case 3:
+                month = Month.March;
+                break;
+            case 4:
+                month = Month.April;
+                break;
+            case 5:
+                month = Month.May;
+                break;
+            case 6:
+                month = Month.June;
+                break;
+            case 7:
+                month = Month.July;
+                break;
+            case 8 :
+                month = Month.August;
+                break;
+            case 9:
+                month = Month.September;
+                break;
+            case 10:
+                month = Month.October;
+                break;
+            case 11:
+                month = Month.November;
+                break;
+            case 12:
+                month = Month.December;
+                break;
+            default:
+                break;
+        }
+        Auction auction = foundAuctionByPropertyAndMonth(property, month);
+        for(Offer o : auction.getStoryOfOffer()){
+            o.toString();
+        }
     }
 
     public void putOffer(){
@@ -380,20 +449,52 @@ public class Application {
         }
         Auction auction = foundAuctionByPropertyAndMonth(property, month);
         
-        if(!(auction==null)){
-            
-        }else{
+        if(auction==null){
             System.out.println("No auction found");
             return;
+        }else{
+           int amount = proposeOffer(auction);
+           if(isBid(amount)){
+               addOffer(auction, amount);
+           }
         }
     }
     
-    public void proposeOffer(Auction auction){
+    public void addOffer(Auction auction, int amount){
+        Offer offer = new Offer((Tenant)currentConnected, amount, auction);
+        aAuction.addOffer(offer, auction);
+        aOffer.addOffer(offer);
+    }
+    
+    public boolean isBid(int amount){
+        while(amount%10!=0) {
+            amount+=1;
+        }
+        int addition = 0;
+        for(Offer o : aOffer.getOffers()){
+            if(currentConnected==o.getTENANT()){
+                if(!(o.getAUCTION().getIsClose())){
+                    if(o.isWinner()){
+                        addition+=o.getAMOUNT();
+                    }
+                    else{
+                        addition+=1;
+                    }
+                }
+            }
+        }
+        if(currentConnected.enougthToPay(addition+amount)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public int proposeOffer(Auction auction){
         Offer lastOffer = auction.getLastOffer();
-        System.out.println("The last offer is actual as " + lastOffer.getAmount());
-        int choice;
-        choice = ARR_userNumericInput(1, 12, "Your amount ? It's a must be greater by 10 than the last offer (arround at multiple of 10 automatically)");
-        
+        System.out.println("The last offer is actual as " + lastOffer.getAMOUNT());
+        int choice = ARR_userNumericInput(1, 1000000, "Your amount ? It's a must be greater by 10 than the last offer (arround at multiple of 10 automatically)");
+        return choice;
     }
     
     public Auction foundAuctionByPropertyAndMonth(Property property, Month month){
@@ -524,10 +625,18 @@ public class Application {
         }
     }
 
-    public void displayAllProperties() {
+    public void displayAllProperties() {    
         if (!properties.isEmpty()) {
             for (Property p : properties) {
-                p.displayPropertyInformation();
+                
+                if(currentConnected.getType().equals(TypeOfAccount.ADMIN)){
+                    if(p.getOwner().equals(currentConnected)){
+                        p.displayPropertyInformation();
+                    }
+                }
+                else{
+                    p.displayPropertyInformation();
+                }
             }
         } else {
             System.out.println("No property available !");

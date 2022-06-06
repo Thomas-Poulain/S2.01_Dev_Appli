@@ -29,6 +29,7 @@ public class Property {
         this.maxCapacity=maxCapacity;
         this.nominalPrice=nominalPrice;
         this.name =name;
+        this.typeOfProperty = typeOfProperty;
     }
 
     public String getName() {

@@ -22,7 +22,11 @@ public class AccessOffer {
         offers.add(new Offer(tenant , amount, auction));
     }
 
-    public void displayAllaOffers(){
+    public void addOffer(Offer o){
+        offers.add(o);
+    }
+    
+    public void displayAllOffers(){
         if(!offers.isEmpty()){
             for(Offer o : offers){
                 o.toString();
@@ -30,6 +34,14 @@ public class AccessOffer {
         }else{
             System.out.println("No offers find.");
         }
+    }
+
+    public ArrayList<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(ArrayList<Offer> offers) {
+        this.offers = offers;
     }
     
     public void displayOfferByTenant(Tenant t){
