@@ -87,7 +87,7 @@ public class Auction {
     
     @Override
     public String toString() {
-        return "The property at " + this.getPROPERTY().getAdress()
+        return "The property at " + this.getPROPERTY().getTown()
                 + " at " + this.getMONTH()
                 + "rented by " + this.getOWNER().getLogin() +"."
                 + "The actual winner is" + this.LastOffer.getTENANT().getLogin();

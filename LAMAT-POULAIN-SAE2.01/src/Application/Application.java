@@ -12,9 +12,7 @@ import Account.Admin;
 import Account.Account;
 import java.util.ArrayList;
 import java.util.Scanner;
-import Auction.AccessAuction;
-import Auction.Auction;
-import Auction.Month;
+import Auction.*;
 import Property.TypeOfProperty;
 import static Property.TypeOfProperty.HOUSE;
 import Reservation.AccessReservation;
@@ -36,6 +34,7 @@ public class Application {
     private ArrayList<String> beginItems = new ArrayList<>();
     private AccessAuction aAuction = new AccessAuction();
     private AccessReservation aReservation = new AccessReservation();
+    private AccessOffer aOffer = new AccessOffer();
 
     Application() {
         beginItems.add("Quit");
@@ -319,7 +318,7 @@ public class Application {
                 fillWallet();
                 break;
             case 5:
-                // voir les enchères
+                displayAllAuctions();
                 break;
             case 6:
                 // lister historique des offres
@@ -336,8 +335,78 @@ public class Application {
 
     public void putOffer(){
         Property property = foundPropertyByName();
+        Month.displayEnumTypeOfMonth();
+        int choice = ARR_userNumericInput(1, 12, "Which month ? ");
+        Month month = null;
+        switch (choice) {
+            case 1:
+                month = Month.January;
+                break;
+            case 2:
+                month = Month.February;
+                break;
+            case 3:
+                month = Month.March;
+                break;
+            case 4:
+                month = Month.April;
+                break;
+            case 5:
+                month = Month.May;
+                break;
+            case 6:
+                month = Month.June;
+                break;
+            case 7:
+                month = Month.July;
+                break;
+            case 8 :
+                month = Month.August;
+                break;
+            case 9:
+                month = Month.September;
+                break;
+            case 10:
+                month = Month.October;
+                break;
+            case 11:
+                month = Month.November;
+                break;
+            case 12:
+                month = Month.December;
+                break;
+            default:
+                break;
+        }
+        Auction auction = foundAuctionByPropertyAndMonth(property, month);
+        
+        if(!(auction==null)){
+            
+        }else{
+            System.out.println("No auction found");
+            return;
+        }
+    }
+    
+    public void proposeOffer(Auction auction){
+        Offer lastOffer = auction.getLastOffer();
+        System.out.println("The last offer is actual as " + lastOffer.getAmount());
+        int choice;
+        choice = ARR_userNumericInput(1, 12, "Your amount ? It's a must be greater by 10 than the last offer (arround at multiple of 10 automatically)");
         
     }
+    
+    public Auction foundAuctionByPropertyAndMonth(Property property, Month month){
+        ArrayList<Auction> auctions = aAuction.getAuctions();
+        Auction auction = null;
+        for(Auction a : auctions){
+            if(a.getMONTH().equals(month) && a.getPROPERTY().equals(property)){
+                auction = a;
+            }
+        }
+        return auction;
+    }
+    
     
     public void createAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type) {
         switch (type) {
@@ -368,7 +437,7 @@ public class Application {
             if (acc.getLogin().equals(login)) {
                 currentConnected = acc;
             }
-        }
+        }  
         if (currentConnected == null) {
             System.out.println("Login failed");
         }
@@ -789,6 +858,7 @@ public class Application {
                 break;
         }
         aAuction.addAAuction((Owner) currentConnected, property, month);
+        System.out.println("Auction created with sucess");
     }
 
     public void addProperty() {
