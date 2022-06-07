@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -11,25 +11,26 @@ import Account.Owner;
  * @author etd
  */
 public class Property {
+
     private int maxNight;
     private String name;
     private String town;
     private String adress;
     private String description;
     private Owner owner;
-    private boolean isRented=false;
+    private boolean isRented = false;
     private int maxCapacity;
     private int nominalPrice;
     private TypeOfProperty typeOfProperty;
 
-    public Property(String name, String town,String adress,String description, Owner owner,int maxCapacity, int nominalPrice, TypeOfProperty typeOfProperty) {
-        this.town=town;
-        this.adress=adress;
-        this.description=description;
-        this.owner=owner;
-        this.maxCapacity=maxCapacity;
-        this.nominalPrice=nominalPrice;
-        this.name =name;
+    public Property(String name, String town, String adress, String description, Owner owner, int maxCapacity, int nominalPrice, TypeOfProperty typeOfProperty) {
+        this.town = town;
+        this.adress = adress;
+        this.description = description;
+        this.owner = owner;
+        this.maxCapacity = maxCapacity;
+        this.nominalPrice = nominalPrice;
+        this.name = name;
         this.typeOfProperty = typeOfProperty;
     }
 
@@ -100,11 +101,13 @@ public class Property {
     public void setNominalPrice(int nominalPrice) {
         this.nominalPrice = nominalPrice;
     }
-    
-    public void displayPropertyInformation(){
+
+    public void displayPropertyInformation() {
         System.out.println("-----");
-        System.out.println("It's a "+ this.getTypeOfProperty() + " in "+this.getTown());
-        System.out.println("Description : "+this.getDescription());
+        System.out.println("It's a " + this.getTypeOfProperty() + " in " + this.getTown());
+        System.out.println("Description : " + this.getDescription());
+        System.out.println("Adress : " + this.getAdress());
+        System.out.println("Nominal Price : " + this.getNominalPrice());
         System.out.println("-----");
     }
 }

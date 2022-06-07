@@ -38,14 +38,14 @@ public class Application {
 
     Application() {
     }
-    
-    void disconnect(){
-        currentConnected=null;
+
+    void disconnect() {
+        currentConnected = null;
         beginItems.clear();
         menuItems.clear();
     }
-    
-    public void log(){
+
+    public void log() {
         beginItems.add("Quit");
         beginItems.add("To log in");
         beginItems.add("Create an account");
@@ -56,7 +56,7 @@ public class Application {
         displayMenu(beginItems);
         int choice = ARR_userNumericInput(0, beginItems.size() - 1, "Choose an action");
         performActionConnection(choice);
-        if(!(choice == 0)){
+        if (!(choice == 0)) {
             run();
         }
     }
@@ -82,7 +82,7 @@ public class Application {
                     menuItems.add("Add a property");
                     menuItems.add("Remove a property");
                     menuItems.add("Edit a property");
-                    menuItems.add("Display all properties");
+                    menuItems.add("Display my properties");
                     menuItems.add("List account's informations");
                     menuItems.add("Edit account's informations");
                     break;
@@ -121,15 +121,15 @@ public class Application {
     private void ARR_CreateAccount() {
         String login;
         boolean loginOk = true;
-        
-        do {    
+
+        do {
             login = ARR_userStringInput("your login ?");
-            if(!loginAvailable(login)){
-                loginOk= false;
+            if (!loginAvailable(login)) {
+                loginOk = false;
                 System.out.println("login already used");
             }
-        }while(!loginOk);
-        
+        } while (!loginOk);
+
         String name = ARR_userStringInput("your name ?");
         String surname = ARR_userStringInput("your surname ?");
         String nickname = ARR_userStringInput("your nickname ?");
@@ -202,7 +202,9 @@ public class Application {
                     quit = performActionAdmin(choice);
                     break;
             }
-            displayMenu(menuItems);
+            if (!quit) {
+                displayMenu(menuItems);
+            }
         } while (!quit);
         disconnect();
         ARR_ToLogIn();
@@ -231,6 +233,7 @@ public class Application {
     private void performActionConnection(int choice) {
         switch (choice) {
             case 0:
+                System.out.println("");
                 break;
             case 1:
                 connection();
@@ -248,6 +251,9 @@ public class Application {
         switch (choice) {
             case 0:
                 res = true;
+                System.out.println("");
+                System.out.println("Log out !");
+                System.out.println("");
                 break;
             case 1:
                 displayAllUsers();
@@ -288,6 +294,9 @@ public class Application {
         switch (choice) {
             case 0:
                 res = true;
+                System.out.println("");
+                System.out.println("Log out !");
+                System.out.println("");
                 break;
             case 1:
                 ARR_addProperty();
@@ -322,6 +331,9 @@ public class Application {
         switch (choice) {
             case 0:
                 res = true;
+                System.out.println("");
+                System.out.println("Log out !");
+                System.out.println("");
                 break;
             case 1:
                 displayInformations();
@@ -356,17 +368,28 @@ public class Application {
         }
         return res;
     }
-    
-    public void displayMyOffer(){
+
+    public void displayMyOffer() {
         ArrayList<Offer> offers = aOffer.getOffers();
-        for(Offer o : offers){
-            if(o.getTENANT().equals(currentConnected)){
+        ArrayList<Offer> myOffers = myOffers(offers, currentConnected);
+        if (!myOffers.isEmpty()) {
+            for (Offer o : myOffers) {
                 o.toString();
             }
         }
     }
-    
-    public void displayOffers(){
+
+    public ArrayList<Offer> myOffers(ArrayList<Offer> offers, Account a) {
+        ArrayList<Offer> myOffers = new ArrayList<>();
+        for (Offer o : offers) {
+            if (o.getTENANT().equals(currentConnected)) {
+                myOffers.add(o);
+            }
+        }
+        return myOffers;
+    }
+
+    public void displayOffers() {
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
@@ -393,7 +416,7 @@ public class Application {
             case 7:
                 month = Month.July;
                 break;
-            case 8 :
+            case 8:
                 month = Month.August;
                 break;
             case 9:
@@ -412,12 +435,12 @@ public class Application {
                 break;
         }
         Auction auction = foundAuctionByPropertyAndMonth(property, month);
-        for(Offer o : auction.getStoryOfOffer()){
+        for (Offer o : auction.getStoryOfOffer()) {
             o.toString();
         }
     }
 
-    public void ARR_CreateABid(){
+    public void ARR_CreateABid() {
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
@@ -444,7 +467,7 @@ public class Application {
             case 7:
                 month = Month.July;
                 break;
-            case 8 :
+            case 8:
                 month = Month.August;
                 break;
             case 9:
@@ -463,68 +486,62 @@ public class Application {
                 break;
         }
         Auction auction = foundAuctionByPropertyAndMonth(property, month);
-        
-        int nbNight = ARR_userNumericInput(1, auction.getNbNight() , "number of night (max " + auction.getNbNight() + ") ?" );
-        if(auction==null){
+
+        int nbNight = ARR_userNumericInput(1, auction.getNbNight(), "number of night (max " + auction.getNbNight() + ") ?");
+        if (auction == null) {
             System.out.println("No auction found");
             return;
-        }else{
-           int amount = proposeOffer(auction);
-           while(amount%10!=0) {
-            amount+=1;
+        } else {
+            int amount = proposeOffer(auction);
+            while (amount % 10 != 0) {
+                amount += 1;
             }
-           if(isBid(amount)){
-               addOffer(auction, amount, nbNight);
-           }
+            if (isBid(amount)) {
+                addOffer(auction, amount, nbNight);
+            }
         }
     }
-    
-    public void addOffer(Auction auction, int amount, int nbNight){
-        Offer offer = new Offer((Tenant)currentConnected, amount, auction, nbNight);
+
+    public void addOffer(Auction auction, int amount, int nbNight) {
+        Offer offer = new Offer((Tenant) currentConnected, amount, auction, nbNight);
         aAuction.addOffer(offer, auction);
         aOffer.addOffer(offer);
     }
-    
-    public boolean isBid(int amount){
+
+    public boolean isBid(int amount) {
         int addition = 0;
-        for(Offer o : aOffer.getOffers()){
-            if(currentConnected==o.getTENANT()){
-                if(!(o.getAUCTION().getIsClose())){
-                    if(o.isWinner()){
-                        addition+=o.getAMOUNT();
-                    }
-                    else{
-                        addition+=1;
+        for (Offer o : aOffer.getOffers()) {
+            if (currentConnected == o.getTENANT()) {
+                if (!(o.getAUCTION().getIsClose())) {
+                    if (o.isWinner()) {
+                        addition += o.getAMOUNT();
+                    } else {
+                        addition += 1;
                     }
                 }
             }
         }
-        if(currentConnected.enougthToPay(addition+amount)){
-            return true;
-        }else{
-            return false;
-        }
+        return currentConnected.enougthToPay(addition + amount);
     }
-    
-    public int proposeOffer(Auction auction){
+
+    public int proposeOffer(Auction auction) {
         Offer lastOffer = auction.getLastOffer();
         System.out.println("The last offer is actual as " + lastOffer.getAMOUNT());
         int choice = ARR_userNumericInput(1, 1000000, "Your amount ? It's a must be greater by 10 than the last offer (arround at multiple of 10 automatically)");
         return choice;
     }
-    
-    public Auction foundAuctionByPropertyAndMonth(Property property, Month month){
+
+    public Auction foundAuctionByPropertyAndMonth(Property property, Month month) {
         ArrayList<Auction> auctions = aAuction.getAuctions();
         Auction auction = null;
-        for(Auction a : auctions){
-            if(a.getMONTH().equals(month) && a.getPROPERTY().equals(property)){
+        for (Auction a : auctions) {
+            if (a.getMONTH().equals(month) && a.getPROPERTY().equals(property)) {
                 auction = a;
             }
         }
         return auction;
     }
-    
-    
+
     public void ARR_CreateAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type) {
         switch (type) {
             case OWNER:
@@ -537,13 +554,12 @@ public class Application {
                 break;
         }
     }
-    
-    private boolean loginAvailable(String login){
+
+    private boolean loginAvailable(String login) {
         boolean ok = true;
-        for(Account a : accounts){
-            if(a.getLogin().equals(login))
-            {           
-                ok=false;
+        for (Account a : accounts) {
+            if (a.getLogin().equals(login)) {
+                ok = false;
             }
         }
         return ok;
@@ -554,28 +570,12 @@ public class Application {
             if (acc.getLogin().equals(login)) {
                 currentConnected = acc;
             }
-        }  
+        }
         if (currentConnected == null) {
             System.out.println("Login failed");
         }
     }
-/*
-    public void deleteAProperty(Account currentConnected, Property p) {
-        ArrayList<Property> tmp = new ArrayList<>();
-        if (currentConnected.getType() == TypeOfAccount.ADMIN) {
-            properties.remove(p);
-            tmp = p.getOwner().getProperties();
-            tmp.remove(p);
-            p.getOwner().setProperties(tmp);
-        } else if (currentConnected.getType() == TypeOfAccount.OWNER) {
-            if (currentConnected.equals(p.getOwner())) {
-                properties.remove(p);
-                tmp = p.getOwner().getProperties();
-                tmp.remove(p);
-            }
-        }
-    }
-*/
+
     public void changePropertyDesc(Account currentConnected, Property p, String s) {
         if (currentConnected.getType() == TypeOfAccount.ADMIN) {
             p.setDescription(s);
@@ -636,22 +636,37 @@ public class Application {
         }
     }
 
-    public void displayAllProperties() {    
+    public void displayAllProperties() {
         if (!properties.isEmpty()) {
-            for (Property p : properties) {
-                
-                if(currentConnected.getType().equals(TypeOfAccount.ADMIN)){
-                    if(p.getOwner().equals(currentConnected)){
-                        p.displayPropertyInformation();
+            if (currentConnected.getType().equals(TypeOfAccount.OWNER)) {
+                ArrayList<Property> ownerProperties = foundPropertyByOwner(currentConnected);
+                if (!ownerProperties.isEmpty()) {
+                    for (Property p2 : ownerProperties) {
+                        p2.displayPropertyInformation();
                     }
                 }
-                else{
-                    p.displayPropertyInformation();
+            } else {
+                if (currentConnected.getType().equals(TypeOfAccount.ADMIN)) {
+                    for (Property p3 : properties) {
+                        p3.displayPropertyInformation();
+                    }
                 }
             }
         } else {
             System.out.println("No property available !");
         }
+    }
+
+    public ArrayList<Property> foundPropertyByOwner(Account a) {
+        ArrayList<Property> ownerProperties = new ArrayList<>();
+        if (!properties.isEmpty()) {
+            for (Property p : properties) {
+                if (p.getOwner().getLogin().equals(a.getLogin())) {
+                    ownerProperties.add(p);
+                }
+            }
+        }
+        return ownerProperties;
     }
 
     public void displayInformations() {
@@ -710,8 +725,8 @@ public class Application {
         createAdminAccount(login, name, surname, nickname, email);
         System.out.println("Your account was created with success !");
     }
-    
-    public void createAdminAccount(String login, String name, String surname, String nickname, String email){
+
+    public void createAdminAccount(String login, String name, String surname, String nickname, String email) {
         accounts.add(new Admin(login, name, surname, nickname, email));
     }
 
@@ -721,22 +736,26 @@ public class Application {
 
     public void removeAProperty() {
         String adress = ARR_userStringInput("adress");
-        Property toDelete = null;
+        Property toRemove = removeAPropertyByAdress(adress);
+        if (toRemove != null) {
+            properties.remove(toRemove);
+            System.out.println("Successfully deleted !");
+        }
+    }
+
+    public Property removeAPropertyByAdress(String s) {
+        Property toRemove = null;
         if (!properties.isEmpty()) {
             for (Property p : properties) {
-                if (p.getAdress().equals(adress)) {
-                    toDelete = p;
+                if (p.getAdress().equals(s)) {
+                    toRemove = p;
+                    break;
                 }
-            }
-            if (toDelete != null) {
-                properties.remove(toDelete);
-                System.out.println("Successfully deleted !");
-            } else {
-                System.out.println("No property find for the adress " + adress + ".");
             }
         } else {
             System.out.println("No properties found.");
         }
+        return toRemove;
     }
 
     public void deleteUser() {
@@ -748,19 +767,26 @@ public class Application {
         }
 
         if (!accounts.isEmpty()) {
-            for (Account a : accounts) {
-                if (a.getLogin().equals(user)) {
-                    toDelete = a;
-                }
-            }
-            if (toDelete != null) {
-                accounts.remove(toDelete);
-                System.out.println("Successfully deleted !");
-            } else {
-                System.out.println("No user found for the login " + user + ".");
-            }
+            deleteUserForALogin(user);
         } else {
             System.out.println("No accounts found.");
+        }
+
+    }
+
+    public void deleteUserForALogin(String s) {
+        Account toDelete = null;
+        for (Account a : accounts) {
+            if (a.getLogin().equals(s)) {
+                toDelete = a;
+                break;
+            }
+        }
+        if (toDelete != null) {
+            accounts.remove(toDelete);
+            System.out.println("Successfully deleted !");
+        } else {
+            System.out.println("No user found for the login " + s + ".");
         }
     }
 
@@ -781,8 +807,8 @@ public class Application {
             System.out.println("No accounts found.");
         }
     }
-    
-    private void editUserChoice(Account a){
+
+    private void editUserChoice(Account a) {
         System.out.println("What do you want to change ?");
         ArrayList<String> mess = new ArrayList<>();
         mess.add("user's name");
@@ -791,7 +817,7 @@ public class Application {
         mess.add("user's email");
         displayList(mess);
 
-        int choice = ARR_userNumericInput(0, mess.size()-1, "Choose an action");
+        int choice = ARR_userNumericInput(0, mess.size() - 1, "Choose an action");
 
         String newest = ARR_userStringInput("The newest");
 
@@ -811,23 +837,21 @@ public class Application {
         }
     }
 
-    
-     public ArrayList<String> searchPropertyByName(String name){
+    public ArrayList<String> searchPropertyByName(String name) {
         ArrayList<String> nameList = new ArrayList<>();
-        for(Property p : properties){
-            if(currentConnected.getType() == TypeOfAccount.ADMIN){
-               nameList.add(p.getName());
-            }else{
-                if(p.getOwner() == currentConnected)
-                {
-                   nameList.add(p.getName());
+        for (Property p : properties) {
+            if (currentConnected.getType() == TypeOfAccount.ADMIN) {
+                nameList.add(p.getName());
+            } else {
+                if (p.getOwner() == currentConnected) {
+                    nameList.add(p.getName());
                 }
             }
         }
         return searchListByPart(name, nameList);
     }
-    
-    public Property foundPropertyByName(){
+
+    public Property foundPropertyByName() {
         String partName = ARR_userStringInput("name property");
         ArrayList<String> name = searchPropertyByAdress(partName);
         if (name.isEmpty()) {
@@ -835,43 +859,41 @@ public class Application {
         }
         displayList(name);
         String a = name.get(ARR_userNumericInput(0, name.size() - 1, "Which name ?"));
-        
+
         Property property = null;
-        for(Property p : properties)
-        {
-            if(p.getAdress().equals(a)){
+        for (Property p : properties) {
+            if (p.getAdress().equals(a)) {
                 property = p;
             }
         }
         return property;
     }
-    
-    public ArrayList<Property> GetPropertyForAOwner(){
+
+    public ArrayList<Property> GetPropertyForAOwner() {
         ArrayList propertiesByOwner = new ArrayList<>();
-        for(Property p : properties){
-            if(currentConnected.getLogin().equals(p.getOwner().getLogin())){
+        for (Property p : properties) {
+            if (currentConnected.getLogin().equals(p.getOwner().getLogin())) {
                 propertiesByOwner.add(p);
             }
         }
         return propertiesByOwner;
     }
-    
-    public ArrayList<String> searchPropertyByAdress(String adress){
+
+    public ArrayList<String> searchPropertyByAdress(String adress) {
         ArrayList<String> adressList = new ArrayList<>();
-        for(Property p : properties){
-            if(currentConnected.getType() == TypeOfAccount.ADMIN){
-               adressList.add(p.getAdress());
-            }else{
-                if(p.getOwner() == currentConnected)
-                {
-                   adressList.add(p.getAdress());
+        for (Property p : properties) {
+            if (currentConnected.getType() == TypeOfAccount.ADMIN) {
+                adressList.add(p.getAdress());
+            } else {
+                if (p.getOwner() == currentConnected) {
+                    adressList.add(p.getAdress());
                 }
             }
         }
         return searchListByPart(adress, adressList);
     }
-    
-    public Property foundPropertyByAdress(){
+
+    public Property foundPropertyByAdress() {
         String partName = ARR_userStringInput("adress property");
         ArrayList<String> adress = searchPropertyByAdress(partName);
         if (adress.isEmpty()) {
@@ -879,25 +901,24 @@ public class Application {
         }
         displayList(adress);
         String a = adress.get(ARR_userNumericInput(0, adress.size() - 1, "Which adress ?"));
-        
+
         Property property = null;
-        for(Property p : properties)
-        {
-            if(p.getAdress().equals(a)){
+        for (Property p : properties) {
+            if (p.getAdress().equals(a)) {
                 property = p;
             }
         }
         return property;
     }
-    
+
     public void editProperty() {
         Property property = foundPropertyByAdress();
-        if(!(property == null)){
-             editPropertyChoice(property);
+        if (!(property == null)) {
+            editPropertyChoice(property);
         }
     }
-    
-    private void editPropertyChoice(Property property){
+
+    private void editPropertyChoice(Property property) {
         System.out.println("What do you want to change ?");
         ArrayList<String> mess = new ArrayList<>();
         mess.add("property name");
@@ -923,11 +944,11 @@ public class Application {
                 property.setTown(newest);
                 break;
             case 3:
-                i=Integer.parseInt(newest);  
+                i = Integer.parseInt(newest);
                 property.setMaxCapacity(i);
                 break;
             case 4:
-                i=Integer.parseInt(newest);
+                i = Integer.parseInt(newest);
                 property.setNominalPrice(i);
                 break;
             case 5:
@@ -935,11 +956,11 @@ public class Application {
                 break;
         }
     }
-    
-    public void createAuction(){
+
+    public void createAuction() {
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
-        int nbNight = ARR_userNumericInput(0, 3, "the number of night");
+        int nbNight = ARR_userNumericInput(0, 15, "the number of night");
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
         Month month = null;
         switch (choice) {
@@ -964,7 +985,7 @@ public class Application {
             case 7:
                 month = Month.July;
                 break;
-            case 8 :
+            case 8:
                 month = Month.August;
                 break;
             case 9:
@@ -982,8 +1003,12 @@ public class Application {
             default:
                 break;
         }
-        aAuction.addAAuction((Owner) currentConnected, property, month, nbNight);
-        System.out.println("Auction created with sucess");
+        if (property.getOwner().getLogin().equals(currentConnected.getName())) {
+            aAuction.addAAuction((Owner) currentConnected, property, month, nbNight);
+            System.out.println("Auction created with sucess");
+        } else {
+            System.out.println("It's not your own property !");
+        }
     }
 
     public void ARR_addProperty() {
@@ -1018,14 +1043,14 @@ public class Application {
         }
         int maxCapacity = ARR_userNumericInput(1, 100, "Property's capacity :");
         int nominalPrice = ARR_userNumericInput(1, 100, "nominalPrice (€) :");
-        createProperty(name, town, adress, description, (Owner)currentConnected, maxCapacity, nominalPrice, type);
+        createProperty(name, town, adress, description, (Owner) currentConnected, maxCapacity, nominalPrice, type);
     }
-    
-    public void createProperty(String name, String town, String adress, String description, Owner owner, int maxCapacity, int nominalPrice, TypeOfProperty type){
+
+    public void createProperty(String name, String town, String adress, String description, Owner owner, int maxCapacity, int nominalPrice, TypeOfProperty type) {
         Property p = new Property(name, town, adress, description, owner, maxCapacity, nominalPrice, type);
         properties.add(p);
     }
-    
+
     private ArrayList<String> searchListByPart(String part, ArrayList<String> list) {
         ArrayList<String> res = new ArrayList<>();
         for (String item : list) {
