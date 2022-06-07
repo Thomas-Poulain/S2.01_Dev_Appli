@@ -24,8 +24,8 @@ public class AccessAuction {
             }
         }
     }
-    public void addAAuction(Owner owner, Property property, Month month){
-        auctions.add(new Auction(owner , property, month));
+    public void addAAuction(Owner owner, Property property, Month month, int nbNight){
+        auctions.add(new Auction(owner , property, month, nbNight));
     }
 
     public ArrayList<Auction> getAuctions() {

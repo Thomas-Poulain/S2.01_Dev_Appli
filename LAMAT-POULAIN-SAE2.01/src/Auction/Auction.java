@@ -16,6 +16,8 @@ import java.util.Set;
  * @author Thomas
  */
 public class Auction {
+    private int nbNight; 
+    private int miniBid;
     private Boolean isClose;
     private Offer LastOffer;
     private Owner OWNER;
@@ -23,11 +25,21 @@ public class Auction {
     private Month MONTH;
     private ArrayList<Offer> storyOfOffer = new ArrayList<>();
     
-    Auction(Owner owner, Property property, Month month){
+    Auction(Owner owner, Property property, Month month, int nbNight){
         this.OWNER = owner;
         this.PROPERTY = property;
         this.MONTH = month;   
         this.isClose = false;
+        miniBid = ((PROPERTY.getMaxCapacity()*PROPERTY.getNominalPrice()*nbNight)/10);
+        this.nbNight = nbNight;
+    }
+
+    public int getNbNight() {
+        return nbNight;
+    }
+
+    public int getMiniBid() {
+        return miniBid;
     }
 
      public Boolean getIsClose() {

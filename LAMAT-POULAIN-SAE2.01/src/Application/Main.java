@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author thoma
+ * @author thomas
  */
 public class Main {
     
@@ -19,13 +19,13 @@ public class Main {
       public static void main(String[] args) {
         Application app = new Application();
         putExempleDataIn(app);
-        app.logIn();
-        app.run();
+        app.ARR_ToLogIn();
         System.out.println("disconnect");
     }
     public static void putExempleDataIn(Application app){
         app.createAdminAccount("root", "root", "root", "root", "root");
-        app.createAccount("owner", "owner", "owner", "owner", "owner", TypeOfAccount.OWNER);
-        app.createAccount("tenant", "tenant", "tenant", "tenant", "tenant", TypeOfAccount.TENANT);
+        app.ARR_CreateAccount("owner", "owner", "owner", "owner", "owner", TypeOfAccount.OWNER);
+        app.ARR_CreateAccount("tenant", "tenant", "tenant", "tenant", "tenant", TypeOfAccount.TENANT);
+        
     }  
 }

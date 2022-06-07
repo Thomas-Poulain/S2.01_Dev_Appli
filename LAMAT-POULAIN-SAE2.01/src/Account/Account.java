@@ -93,5 +93,4 @@ public abstract class Account {
         System.out.println("wallet :" + wallet);
         System.out.println("-----"); 
     }
-    
 }

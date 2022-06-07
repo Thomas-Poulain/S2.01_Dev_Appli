@@ -18,8 +18,8 @@ public class AccessOffer {
     
     public AccessOffer(){}
      
-    public void addAOffer(Tenant tenant, int amount, Auction auction){
-        offers.add(new Offer(tenant , amount, auction));
+    public void addAOffer(Tenant tenant, int amount, Auction auction, int nbNight){
+        offers.add(new Offer(tenant , amount, auction, nbNight));
     }
 
     public void addOffer(Offer o){

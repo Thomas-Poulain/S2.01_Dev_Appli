@@ -14,6 +14,7 @@ import Account.Tenant;
  * @author etd
  */
 public class Offer {
+    private final int nbNight;
     private final Auction AUCTION;
     private final Tenant TENANT;
     private final int AMOUNT;
@@ -27,10 +28,15 @@ public class Offer {
         this.winner = winner;
     }
     
-    public Offer(Tenant tenant, int amount, Auction auction){
+    public Offer(Tenant tenant, int amount, Auction auction, int nbNight){
         this.TENANT=tenant;
         this.AMOUNT=amount;
         this.AUCTION=auction;
+        this.nbNight = nbNight;
+    }
+
+    public int getNbNight() {
+        return nbNight;
     }
 
     public Tenant getTENANT() {

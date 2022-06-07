@@ -37,22 +37,35 @@ public class Application {
     private AccessOffer aOffer = new AccessOffer();
 
     Application() {
+    }
+    
+    void disconnect(){
+        currentConnected=null;
+        beginItems.clear();
+        menuItems.clear();
+    }
+    
+    public void log(){
         beginItems.add("Quit");
         beginItems.add("To log in");
         beginItems.add("Create an account");
     }
 
-    public void logIn() {
+    public void ARR_ToLogIn() {
+        log();
         displayMenu(beginItems);
         int choice = ARR_userNumericInput(0, beginItems.size() - 1, "Choose an action");
         performActionConnection(choice);
+        if(!(choice == 0)){
+            run();
+        }
     }
 
     public void createMenu() {
         if (currentConnected != null) {
             switch (currentConnected.getType()) {
                 case ADMIN:
-                    menuItems.add("Quit");
+                    menuItems.add("Disconnect");
                     menuItems.add("Display all users");
                     menuItems.add("Delete a user");
                     menuItems.add("Edit a user");
@@ -65,7 +78,7 @@ public class Application {
                     menuItems.add("Display all auctions");
                     break;
                 case OWNER:
-                    menuItems.add("Quit");
+                    menuItems.add("Disconnect");
                     menuItems.add("Add a property");
                     menuItems.add("Remove a property");
                     menuItems.add("Edit a property");
@@ -74,7 +87,7 @@ public class Application {
                     menuItems.add("Edit account's informations");
                     break;
                 case TENANT:
-                    menuItems.add("Quit");
+                    menuItems.add("Disconnect");
                     menuItems.add("List account's informations");
                     menuItems.add("Edit account's informations");
                     menuItems.add("Fill wallet");
@@ -105,7 +118,7 @@ public class Application {
         }
     }
 
-    private void createAccount() {
+    private void ARR_CreateAccount() {
         String login;
         boolean loginOk = true;
         
@@ -129,11 +142,11 @@ public class Application {
         } else {
             type = TypeOfAccount.TENANT;
         }
-        createAccount(login, name, surname, nickname, email, type);
+        ARR_CreateAccount(login, name, surname, nickname, email, type);
         currentConnected = accounts.get(accounts.size() - 1);
     }
 
-    public void createAdminAccount(String login, String name, String surname, String nickname, String email) {
+    public void ARR_CreateAdminAccount(String login, String name, String surname, String nickname, String email) {
         accounts.add(new Admin(login, name, surname, nickname, email));
     }
 
@@ -191,6 +204,8 @@ public class Application {
             }
             displayMenu(menuItems);
         } while (!quit);
+        disconnect();
+        ARR_ToLogIn();
     }
 
     private String ARR_userStringInput(String prompt) {
@@ -221,7 +236,7 @@ public class Application {
                 connection();
                 break;
             case 2:
-                createAccount();
+                ARR_CreateAccount();
                 break;
             default:
                 break;
@@ -259,7 +274,7 @@ public class Application {
                 editInformations();
                 break;
             case 9:
-                createAnOtherAdminAccount();
+                ARR_CreateAdminAccount();
                 break;
             case 10:
                 displayAllAuctions();
@@ -275,7 +290,7 @@ public class Application {
                 res = true;
                 break;
             case 1:
-                addProperty();
+                ARR_addProperty();
                 break;
             case 2:
                 removeAProperty();
@@ -315,7 +330,7 @@ public class Application {
                 editInformations();
                 break;
             case 3:
-                putOffer();
+                ARR_CreateABid();
                 break;
             case 4:
                 fillWallet();
@@ -402,7 +417,7 @@ public class Application {
         }
     }
 
-    public void putOffer(){
+    public void ARR_CreateABid(){
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
@@ -449,27 +464,28 @@ public class Application {
         }
         Auction auction = foundAuctionByPropertyAndMonth(property, month);
         
+        int nbNight = ARR_userNumericInput(1, auction.getNbNight() , "number of night (max " + auction.getNbNight() + ") ?" );
         if(auction==null){
             System.out.println("No auction found");
             return;
         }else{
            int amount = proposeOffer(auction);
+           while(amount%10!=0) {
+            amount+=1;
+            }
            if(isBid(amount)){
-               addOffer(auction, amount);
+               addOffer(auction, amount, nbNight);
            }
         }
     }
     
-    public void addOffer(Auction auction, int amount){
-        Offer offer = new Offer((Tenant)currentConnected, amount, auction);
+    public void addOffer(Auction auction, int amount, int nbNight){
+        Offer offer = new Offer((Tenant)currentConnected, amount, auction, nbNight);
         aAuction.addOffer(offer, auction);
         aOffer.addOffer(offer);
     }
     
     public boolean isBid(int amount){
-        while(amount%10!=0) {
-            amount+=1;
-        }
         int addition = 0;
         for(Offer o : aOffer.getOffers()){
             if(currentConnected==o.getTENANT()){
@@ -509,7 +525,7 @@ public class Application {
     }
     
     
-    public void createAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type) {
+    public void ARR_CreateAccount(String login, String name, String surname, String nickname, String email, TypeOfAccount type) {
         switch (type) {
             case OWNER:
                 accounts.add(new Owner(login, name, surname, nickname, email));
@@ -542,11 +558,6 @@ public class Application {
         if (currentConnected == null) {
             System.out.println("Login failed");
         }
-    }
-
-    public void toSignOut() {
-        currentConnected = null;
-        System.out.println("Disconnected");
     }
 /*
     public void deleteAProperty(Account currentConnected, Property p) {
@@ -690,7 +701,7 @@ public class Application {
         }
     }
 
-    public void createAnOtherAdminAccount() {
+    public void ARR_CreateAdminAccount() {
         String login = ARR_userStringInput("login");
         String name = ARR_userStringInput("name");
         String surname = ARR_userStringInput("surname");
@@ -698,6 +709,10 @@ public class Application {
         String email = ARR_userStringInput("email");
         createAdminAccount(login, name, surname, nickname, email);
         System.out.println("Your account was created with success !");
+    }
+    
+    public void createAdminAccount(String login, String name, String surname, String nickname, String email){
+        accounts.add(new Admin(login, name, surname, nickname, email));
     }
 
     public void displayAllAuctions() {
@@ -924,6 +939,7 @@ public class Application {
     public void createAuction(){
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
+        int nbNight = ARR_userNumericInput(0, 3, "the number of night");
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
         Month month = null;
         switch (choice) {
@@ -966,11 +982,11 @@ public class Application {
             default:
                 break;
         }
-        aAuction.addAAuction((Owner) currentConnected, property, month);
+        aAuction.addAAuction((Owner) currentConnected, property, month, nbNight);
         System.out.println("Auction created with sucess");
     }
 
-    public void addProperty() {
+    public void ARR_addProperty() {
         String name = ARR_userStringInput("property's name");
         String town = ARR_userStringInput("property's town ");
         String adress = ARR_userStringInput("property's adress ");
@@ -1002,7 +1018,11 @@ public class Application {
         }
         int maxCapacity = ARR_userNumericInput(1, 100, "Property's capacity :");
         int nominalPrice = ARR_userNumericInput(1, 100, "nominalPrice (€) :");
-        Property p = new Property(name, town, adress, description, (Owner) currentConnected, maxCapacity, nominalPrice, type);
+        createProperty(name, town, adress, description, (Owner)currentConnected, maxCapacity, nominalPrice, type);
+    }
+    
+    public void createProperty(String name, String town, String adress, String description, Owner owner, int maxCapacity, int nominalPrice, TypeOfProperty type){
+        Property p = new Property(name, town, adress, description, owner, maxCapacity, nominalPrice, type);
         properties.add(p);
     }
     
