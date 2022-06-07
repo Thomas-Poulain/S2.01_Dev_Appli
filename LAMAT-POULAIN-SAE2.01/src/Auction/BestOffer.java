@@ -14,7 +14,7 @@ public class BestOffer implements Comparator<Offer>{
 
     @Override
     public int compare(Offer o1, Offer o2) {
-        return o1.getAMOUNT() - o2.getAMOUNT();
+        return o1.getNOMINALPRICE()*o1.getNbNight()*o1.getNbPers() - o2.getNOMINALPRICE()*o2.getNbNight()*o2.getNbPers();
     }
     
 }

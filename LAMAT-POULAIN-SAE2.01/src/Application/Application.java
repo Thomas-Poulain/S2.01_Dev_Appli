@@ -468,6 +468,7 @@ public class Application {
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
+        int nbPers = ARR_userNumericInput(1, property.getMaxCapacity(), "For how many persons ? ");
         Month month = null;
         switch (choice) {
             case 1:
@@ -521,25 +522,32 @@ public class Application {
                 amount += 1;
             }
             if (isBid(amount)) {
-                addOffer(auction, amount, nbNight, (Tenant) currentConnected);
+                addOffer(auction, amount, nbNight, (Tenant) currentConnected, nbPers);
             }
         }
     }
 
-    public void addOffer(Auction auction, int amount, int nbNight, Tenant t) {
-        if (t.getWallet() >= nbNight * amount) {
-            if (auction.getLastOffer() != null) {
-                if (nbNight * amount >= auction.getLastOffer().getNbNight() * auction.getLastOffer().getNbPers()+5) {
-                    Offer offer = new Offer(t, amount, auction, nbNight);
-                    aAuction.addOffer(offer, auction);
-                    aOffer.addOffer(offer);
-                }
-            } else {
-                Offer offer = new Offer(t, amount, auction, nbNight);
+    public void addOffer(Auction auction, int nominalPrice, int nbNight, Tenant t, int nbPers) {
+        int amount = nbNight*nominalPrice*nbPers;
+        if(t.getWallet()>=amount && amount>0.1*auction.getMiniBid()){
+            if(auction.getLastOffer()==null){
+                Offer offer = new Offer(auction, nominalPrice, nbNight, t,nbPers);
                 aAuction.addOffer(offer, auction);
                 aOffer.addOffer(offer);
+                t.setWallet(t.getWallet()-1);
+                walletSociety++;
+            }else{
+                if(auction.getLastOffer().getNOMINALPRICE()*auction.getLastOffer().getNbNight()*auction.getLastOffer().getNbPers()<nbNight*nominalPrice*nbPers){
+                    Offer offer = new Offer(auction, nominalPrice, nbNight, t,nbPers);
+                    aAuction.addOffer(offer, auction);
+                    aOffer.addOffer(offer); 
+                    t.setWallet(t.getWallet()-1); 
+                    walletSociety++;
+                } else {
+                }
             }
         }
+       
     }
 
     public boolean isBid(int amount) {
@@ -1015,7 +1023,7 @@ public class Application {
     public void createAuction() {
         Property property = foundPropertyByName();
         Month.displayEnumTypeOfMonth();
-        int nbNight = ARR_userNumericInput(0, 15, "the number of night");
+        int nbNight = ARR_userNumericInput(0, 10, "the number of night");
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
         Month month = null;
         switch (choice) {

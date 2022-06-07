@@ -32,7 +32,7 @@ public class Auction {
         this.PROPERTY = property;
         this.MONTH = month;   
         this.isClose = false;
-        miniBid = ((PROPERTY.getMaxCapacity()*PROPERTY.getNominalPrice()*nbNight)/10);
+        miniBid = ((PROPERTY.getNominalPrice()*PROPERTY.getMaxCapacity()));
         this.nbNight = nbNight;
     }
 
@@ -98,7 +98,7 @@ public class Auction {
     
     public void updateBestOffer(Offer o){
         if(ItsTheFirst()){
-            setLastOffer(o);
+           this. setLastOffer(o);
             storyOfOffer.add(o);
             o.setWinner(true);
             return;

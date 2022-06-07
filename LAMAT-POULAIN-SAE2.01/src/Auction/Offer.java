@@ -14,12 +14,13 @@ import Account.Tenant;
  * @author etd
  */
 public class Offer {
-    private final int nbNight;
+    private final int NBNIGHTS;
     private final Auction AUCTION;
     private final Tenant TENANT;
-    private final int AMOUNT;
+    private final int NOMINALPRICE;
     private boolean winner;
-    private int nbPers;
+    private final int NBPERS;
+    private final int AMOUNT;
 
     public boolean isWinner() {
         return winner;
@@ -29,16 +30,17 @@ public class Offer {
         this.winner = winner;
     }
     
-    public Offer(Tenant tenant, int amount, Auction auction, int nbNight){
+    public Offer(Auction auction, int nominalPrice, int nbNight,  Tenant tenant, int nbPers){
         this.TENANT=tenant;
-        this.AMOUNT=amount;
+        this.NOMINALPRICE=nominalPrice;
         this.AUCTION=auction;
-        this.nbNight = nbNight;
-        this.nbPers=1;
+        this.NBNIGHTS = nbNight;
+        this.NBPERS=nbPers;
+        this.AMOUNT=(NBNIGHTS*NBPERS*NOMINALPRICE);
     }
 
     public int getNbNight() {
-        return nbNight;
+        return NBNIGHTS;
     }
 
     public Tenant getTENANT() {
@@ -46,11 +48,15 @@ public class Offer {
     }
 
     public int getNbPers() {
-        return nbPers;
+        return NBPERS;
     }
 
     public int getAMOUNT() {
-        return AMOUNT;
+        return NOMINALPRICE;
+    }
+
+    public int getNOMINALPRICE() {
+        return NOMINALPRICE;
     }
    
     @Override
