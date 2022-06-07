@@ -76,12 +76,11 @@ public class ApplicationTest {
         app.getaAuction().getAuctions().get(0).getLastOffer().equals(app.getaOffer().getOffers().get(2));
         app.addOffer(app.getaAuction().getAuctions().get(0), 5, 5, app.foundTenantByName("tenant"));
         assertTrue(app.getaOffer().getOffers().size()==4);
-        app.addOffer(app.getaAuction().getAuctions().get(0), 5, 5, app.foundTenantByName("tenant2"));
+        app.addOffer(app.getaAuction().getAuctions().get(0), 5, 6, app.foundTenantByName("tenant2"));
         assertTrue(app.getaOffer().getOffers().size()==4);
          assertEquals(app.getaAuction().getAuctions().get(0).getWinner(),null);
         app.getaAuction().getAuctions().get(0).setIsClose(true);  
-        System.out.println((app.getaAuction().getAuctions().get(0).getWinner().getLogin()));
-        assertEquals(app.getaAuction().getAuctions().get(0).getWinner().getLogin(),"tenant");
+        assertEquals(app.getaAuction().getAuctions().get(0).getWinner().getLogin(),"tenant2");
    }
     
     public void initializeData(Application app){
