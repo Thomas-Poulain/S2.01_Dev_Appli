@@ -19,6 +19,7 @@ public class Offer {
     private final Tenant TENANT;
     private final int AMOUNT;
     private boolean winner;
+    private int nbPers;
 
     public boolean isWinner() {
         return winner;
@@ -33,6 +34,7 @@ public class Offer {
         this.AMOUNT=amount;
         this.AUCTION=auction;
         this.nbNight = nbNight;
+        this.nbPers=1;
     }
 
     public int getNbNight() {
@@ -41,6 +43,10 @@ public class Offer {
 
     public Tenant getTENANT() {
         return TENANT;
+    }
+
+    public int getNbPers() {
+        return nbPers;
     }
 
     public int getAMOUNT() {

@@ -23,6 +23,10 @@ public abstract class Account {
         return login;
     }
 
+    public int getWallet() {
+        return wallet;
+    }
+
     public String getName() {
         return name;
     }

@@ -521,15 +521,25 @@ public class Application {
                 amount += 1;
             }
             if (isBid(amount)) {
-                addOffer(auction, amount, nbNight);
+                addOffer(auction, amount, nbNight, (Tenant) currentConnected);
             }
         }
     }
 
-    public void addOffer(Auction auction, int amount, int nbNight) {
-        Offer offer = new Offer((Tenant) currentConnected, amount, auction, nbNight);
-        aAuction.addOffer(offer, auction);
-        aOffer.addOffer(offer);
+    public void addOffer(Auction auction, int amount, int nbNight, Tenant t) {
+        if (t.getWallet() >= nbNight * amount) {
+            if (auction.getLastOffer() != null) {
+                if (nbNight * amount >= auction.getLastOffer().getNbNight() * auction.getLastOffer().getNbPers()+5) {
+                    Offer offer = new Offer(t, amount, auction, nbNight);
+                    aAuction.addOffer(offer, auction);
+                    aOffer.addOffer(offer);
+                }
+            } else {
+                Offer offer = new Offer(t, amount, auction, nbNight);
+                aAuction.addOffer(offer, auction);
+                aOffer.addOffer(offer);
+            }
+        }
     }
 
     public boolean isBid(int amount) {
@@ -1117,6 +1127,20 @@ public class Application {
                 if(a.getType().equals(TypeOfAccount.OWNER)){
                     if(a.getLogin().equals(s)){
                         exit = (Owner)a;
+                    }
+                }
+            }
+        }
+        return exit;
+    }
+    
+    public Tenant foundTenantByName(String s){
+        Tenant exit = null;
+        if(!accounts.isEmpty()){
+            for(Account a:accounts){
+                if(a.getType().equals(TypeOfAccount.TENANT)){
+                    if(a.getLogin().equals(s)){
+                        exit = (Tenant)a;
                     }
                 }
             }

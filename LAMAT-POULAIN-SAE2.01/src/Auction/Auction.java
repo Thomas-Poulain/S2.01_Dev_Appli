@@ -4,8 +4,10 @@
  */
 package Auction;
 
+import Account.Account;
 import Auction.Offer;
 import Account.Owner;
+import Account.Tenant;
 import Property.Property;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,6 +81,14 @@ public class Auction {
         setLastOffer(o);
         storyOfOffer.add(o);
         o.setWinner(true);
+    }
+
+    public Tenant getWinner() {
+        if(this.isClose){
+            return this.getLastOffer().getTENANT();
+        }else{
+            return null;
+        }
     }
     
     private boolean ItsTheFirst(){

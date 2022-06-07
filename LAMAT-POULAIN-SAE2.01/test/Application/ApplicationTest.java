@@ -8,8 +8,10 @@ import Account.Account;
 import Account.Owner;
 import Account.TypeOfAccount;
 import Auction.AccessAuction;
+import Auction.AccessOffer;
 import Auction.Auction;
 import Auction.Month;
+import Auction.Offer;
 import Property.Property;
 import Property.TypeOfProperty;
 import java.util.ArrayList;
@@ -61,6 +63,25 @@ public class ApplicationTest {
         aaccess.addAAuction(app.foundOwnerByName("owner"), app.PropertyByAdress("adress"), Month.August, 10);
         app.setaAuction(aaccess);
         assertTrue(app.getaAuction().getAuctions().size()==1);
+        
+        app.foundTenantByName("tenant").setWallet(10000);
+        app.foundTenantByName("tenant2").setWallet(10000);
+        app.addOffer(app.getaAuction().getAuctions().get(0), 5, 1, app.foundTenantByName("tenant"));
+        app.addOffer(app.getaAuction().getAuctions().get(0), 10, 1, app.foundTenantByName("tenant2"));
+        app.addOffer(app.getaAuction().getAuctions().get(0), 5, 3, app.foundTenantByName("tenant"));
+        assertTrue(app.getaOffer().getOffers().size()==3);
+        app.foundTenantByName("tenant2").setWallet(15);
+        app.addOffer(app.getaAuction().getAuctions().get(0), 10, 2, app.foundTenantByName("tenant2"));
+        assertTrue(app.getaOffer().getOffers().size()==3);
+        app.getaAuction().getAuctions().get(0).getLastOffer().equals(app.getaOffer().getOffers().get(2));
+        app.addOffer(app.getaAuction().getAuctions().get(0), 5, 5, app.foundTenantByName("tenant"));
+        assertTrue(app.getaOffer().getOffers().size()==4);
+        app.addOffer(app.getaAuction().getAuctions().get(0), 5, 5, app.foundTenantByName("tenant2"));
+        assertTrue(app.getaOffer().getOffers().size()==4);
+         assertEquals(app.getaAuction().getAuctions().get(0).getWinner(),null);
+        app.getaAuction().getAuctions().get(0).setIsClose(true);  
+        System.out.println((app.getaAuction().getAuctions().get(0).getWinner().getLogin()));
+        assertEquals(app.getaAuction().getAuctions().get(0).getWinner().getLogin(),"tenant");
    }
     
     public void initializeData(Application app){
