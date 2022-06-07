@@ -27,10 +27,10 @@ public class AccountTests {
         Tenant t = new Tenant("rlamat", "lamat", "remi", "rl", "remi.lamat@etu-u.bordeaux.fr");
         
         Assert.assertEquals(t.getType(),TypeOfAccount.TENANT);
-        assert t.getMoney()==0;
+        assert t.getWallet()==0;
         
-        t.setMoney(150);
-        assert t.getMoney()==150;
+        t.setWallet(150);
+        assert t.getWallet()==150;
         Assert.assertTrue(t.enougthToPay(100));
         Assert.assertTrue(t.enougthToPay(150));
         Assert.assertFalse(t.enougthToPay(151));
@@ -43,10 +43,10 @@ public class AccountTests {
         Owner o = new Owner("root", "root", "root", "root", "root.root@root.com");
         
         Assert.assertEquals(o.getType(),TypeOfAccount.OWNER);
-        assert o.getMoney()==0;
+        assert o.getWallet()==0;
         
-        o.setMoney(150);
-        assert o.getMoney()==150;
+        o.setWallet(150);
+        assert o.getWallet()==150;
         Assert.assertTrue(o.enougthToPay(100));
         Assert.assertTrue(o.enougthToPay(150));
         Assert.assertFalse(o.enougthToPay(151));
@@ -60,10 +60,10 @@ public class AccountTests {
         Admin a = new Admin("rlamat", "lamat", "remi", "rl", "remi.lamat@etu-u.bordeaux.fr");
         
         Assert.assertEquals(a.getType(),TypeOfAccount.ADMIN);
-        assert a.getMoney()==0;
+        assert a.getWallet()==0;
         
-        a.setMoney(150);
-        assert a.getMoney()==150;
+        a.setWallet(150);
+        assert a.getWallet()==150;
         Assert.assertTrue(a.enougthToPay(100));
         Assert.assertTrue(a.enougthToPay(150));
         Assert.assertFalse(a.enougthToPay(151));

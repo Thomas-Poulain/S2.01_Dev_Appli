@@ -71,14 +71,6 @@ public abstract class Account {
         return email;
     }
 
-    public int getMoney() {
-        return wallet;
-    }
-
-    public void setMoney(int wallet) {
-        this.wallet = wallet;
-    }
-
     public TypeOfAccount getType() {
         return type;
     }

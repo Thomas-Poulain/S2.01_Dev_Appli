@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import Auction.*;
 import Property.TypeOfProperty;
-import static Property.TypeOfProperty.HOUSE;
-import Reservation.AccessReservation;
-import Reservation.Reservation;
-import java.util.HashSet;
 
 /**
  *
@@ -29,11 +25,10 @@ public class Application {
     private ArrayList<Property> properties = new ArrayList();
     private Account currentConnected = null;
     private int walletSociety = 0;
-    private Scanner scan = new Scanner(System.in);
-    private ArrayList<String> menuItems = new ArrayList<>();
-    private ArrayList<String> beginItems = new ArrayList<>();
+    private final Scanner scan = new Scanner(System.in);
+    private final ArrayList<String> menuItems = new ArrayList<>();
+    private final ArrayList<String> beginItems = new ArrayList<>();
     private AccessAuction aAuction = new AccessAuction();
-    private AccessReservation aReservation = new AccessReservation();
     private AccessOffer aOffer = new AccessOffer();
 
     Application() {
@@ -76,6 +71,7 @@ public class Application {
                     menuItems.add("Edit account't informations");
                     menuItems.add("Create an admin account");
                     menuItems.add("Display all auctions");
+                    menuItems.add("Close an auction");
                     break;
                 case OWNER:
                     menuItems.add("Disconnect");
@@ -94,7 +90,6 @@ public class Application {
                     menuItems.add("Make a bid");
                     menuItems.add("List auctions");
                     menuItems.add("List bid history");
-                    menuItems.add("List reservation");
                     menuItems.add("Display reservztion information");
                     break;
                 default:
@@ -150,7 +145,7 @@ public class Application {
         accounts.add(new Admin(login, name, surname, nickname, email));
     }
 
-    private void connection() {
+    private void ARR_connection() {
         String login = ARR_userStringInput("your login ?");
         toLogIn(login);
     }
@@ -260,7 +255,7 @@ public class Application {
                 System.out.println("");
                 break;
             case 1:
-                connection();
+                ARR_connection();
                 break;
             case 2:
                 ARR_CreateAccount();
@@ -280,35 +275,37 @@ public class Application {
                 System.out.println("");
                 break;
             case 1:
-                displayAllUsers();
+                ARR_displayAllUsers();
                 break;
             case 2:
-                deleteUser();
+                ARR_deleteUser();
                 break;
             case 3:
-                editUser();
+                ARR_editUser();
                 break;
             case 4:
-                removeAProperty();
+                ARR_removeAProperty();
                 break;
             case 5:
-                editProperty();
+                ARR_editProperty();
                 break;
             case 6:
-                displayAllProperties();
+                ARR_displayAllProperties();
                 break;
             case 7:
-                displayInformations();
+                ARR__displayInformations();
                 break;
             case 8:
-                editInformations();
+                ARR_editInformations();
                 break;
             case 9:
                 ARR_CreateAdminAccount();
                 break;
             case 10:
-                displayAllAuctions();
+                ARR_displayAllAuctions();
                 break;
+            case 11:
+                ARR_CloseAuction();
         }
         return res;
     }
@@ -326,25 +323,25 @@ public class Application {
                 ARR_addProperty();
                 break;
             case 2:
-                removeAProperty();
+                ARR_removeAProperty();
                 break;
             case 3:
-                editProperty();
+                ARR_editProperty();
                 break;
             case 4:
-                displayAllProperties();
+                ARR_displayAllProperties();
                 break;
             case 5:
-                displayInformations();
+                ARR__displayInformations();
                 break;
             case 6:
-                editInformations();
+                ARR_editInformations();
                 break;
             case 7:
-                createAuction();
+                ARR_createAuction();
                 break;
             case 8:
-                displayOffers();
+                ARR_displayOffers();
                 break;
         }
         return res;
@@ -360,40 +357,58 @@ public class Application {
                 System.out.println("");
                 break;
             case 1:
-                displayInformations();
+                ARR__displayInformations();
                 break;
             case 2:
-                editInformations();
+                ARR_editInformations();
                 break;
             case 3:
                 ARR_CreateABid();
                 break;
             case 4:
-                fillWallet();
+                ARR_fillWallet();
                 break;
             case 5:
-                displayAllAuctions();
+                ARR_displayAllAuctions();
                 break;
             case 6:
-                // lister historique des offres
+                ARR_displayAllProperties();
                 break;
             case 7:
-                // lister reservation 
-                break;
-            case 8:
-                // afficher détails reservation
-                break;
-            case 9:
-                displayAllProperties();
-                break;
-            case 10:
-                displayMyOffer();
+                ARR_displayMyOffer();
                 break;
         }
         return res;
     }
 
-    public void displayMyOffer() {
+    private void ARR_CloseAuction(){
+        Property property = foundPropertyByName();
+        Month month = switchMonth();
+        Auction auction = foundAuctionByPropertyAndMonth(property, month);
+        closeAuction(auction);
+    }
+    
+   public void closeAuction(Auction auction){
+        auction.setIsClose(true);
+        removeMoneyForOwner(auction.getLastOffer().getTENANT(), auction.getLastOffer(), auction.getOWNER() );
+        removeMoneyForSocity(auction.getStoryOfOffer());
+    }
+   
+   public void removeMoneyForOwner(Tenant tenant, Offer lastOffer, Owner owner){
+       int amount=lastOffer.getNOMINALPRICE()*lastOffer.getNbNight()*lastOffer.getNbPers();
+        tenant.setWallet(tenant.getWallet()-amount);
+        owner.setWallet(owner.getWallet()+amount);
+    }
+   
+   public void removeMoneyForSocity(ArrayList<Offer> looseOffer){
+        for(int i = 1; i<looseOffer.size(); i++){
+            walletSociety+=1;
+            int tmp = looseOffer.get(i).getTENANT().getWallet();
+            looseOffer.get(i).getTENANT().setWallet(tmp-1);
+        }
+    }
+    
+    public void ARR_displayMyOffer() {
         ArrayList<Offer> offers = aOffer.getOffers();
         ArrayList<Offer> myOffers = myOffers(offers, currentConnected);
         if (!myOffers.isEmpty()) {
@@ -413,8 +428,7 @@ public class Application {
         return myOffers;
     }
 
-    public void displayOffers() {
-        Property property = foundPropertyByName();
+    public Month switchMonth(){
         Month.displayEnumTypeOfMonth();
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
         Month month = null;
@@ -458,6 +472,12 @@ public class Application {
             default:
                 break;
         }
+        return month;
+    }
+    
+    public void ARR_displayOffers() {
+        Property property = foundPropertyByName();
+        Month month=switchMonth();
         Auction auction = foundAuctionByPropertyAndMonth(property, month);
         for (Offer o : auction.getStoryOfOffer()) {
             o.toString();
@@ -466,50 +486,8 @@ public class Application {
 
     public void ARR_CreateABid() {
         Property property = foundPropertyByName();
-        Month.displayEnumTypeOfMonth();
-        int choice = ARR_userNumericInput(1, 12, "Which month ? ");
         int nbPers = ARR_userNumericInput(1, property.getMaxCapacity(), "For how many persons ? ");
-        Month month = null;
-        switch (choice) {
-            case 1:
-                month = Month.January;
-                break;
-            case 2:
-                month = Month.February;
-                break;
-            case 3:
-                month = Month.March;
-                break;
-            case 4:
-                month = Month.April;
-                break;
-            case 5:
-                month = Month.May;
-                break;
-            case 6:
-                month = Month.June;
-                break;
-            case 7:
-                month = Month.July;
-                break;
-            case 8:
-                month = Month.August;
-                break;
-            case 9:
-                month = Month.September;
-                break;
-            case 10:
-                month = Month.October;
-                break;
-            case 11:
-                month = Month.November;
-                break;
-            case 12:
-                month = Month.December;
-                break;
-            default:
-                break;
-        }
+        Month month = switchMonth();
         Auction auction = foundAuctionByPropertyAndMonth(property, month);
 
         int nbNight = ARR_userNumericInput(1, auction.getNbNight(), "number of night (max " + auction.getNbNight() + ") ?");
@@ -534,15 +512,11 @@ public class Application {
                 Offer offer = new Offer(auction, nominalPrice, nbNight, t,nbPers);
                 aAuction.addOffer(offer, auction);
                 aOffer.addOffer(offer);
-                t.setWallet(t.getWallet()-1);
-                walletSociety++;
             }else{
                 if(auction.getLastOffer().getNOMINALPRICE()*auction.getLastOffer().getNbNight()*auction.getLastOffer().getNbPers()<nbNight*nominalPrice*nbPers){
                     Offer offer = new Offer(auction, nominalPrice, nbNight, t,nbPers);
                     aAuction.addOffer(offer, auction);
                     aOffer.addOffer(offer); 
-                    t.setWallet(t.getWallet()-1); 
-                    walletSociety++;
                 } else {
                 }
             }
@@ -668,7 +642,7 @@ public class Application {
         }
     }
 
-    public void displayAllUsers() {
+    public void ARR_displayAllUsers() {
         if (!accounts.isEmpty()) {
             for (Account a : accounts) {
                 a.displayAccountInformations();
@@ -678,7 +652,7 @@ public class Application {
         }
     }
 
-    public void displayAllProperties() {
+    public void ARR_displayAllProperties() {
         if (!properties.isEmpty()) {
             if (currentConnected.getType().equals(TypeOfAccount.OWNER)) {
                 ArrayList<Property> ownerProperties = foundPropertyByOwner(currentConnected);
@@ -711,11 +685,11 @@ public class Application {
         return ownerProperties;
     }
 
-    public void displayInformations() {
+    public void ARR__displayInformations() {
         currentConnected.displayAccountInformations();
     }
 
-    public void editInformations() {
+    public void ARR_editInformations() {
         System.out.println("What do you want to change ?");
         ArrayList<String> mess = new ArrayList<>();
         mess.add("name");
@@ -743,7 +717,7 @@ public class Application {
         }
     }
 
-    public void fillWallet() {
+    public void ARR_fillWallet() {
         String cN = ARR_userStringInput("Credit card number");
         String e = ARR_userStringInput("Expiration");
         String p = ARR_userStringInput("Passord");
@@ -754,7 +728,7 @@ public class Application {
 
         int valid = ARR_userNumericInput(0, 1, "Valid this transaction : \n 0.Yes \n 1.No");
         if (valid == 1) {
-            currentConnected.setWallet(currentConnected.getMoney() + addition);
+            currentConnected.setWallet(currentConnected.getWallet()+ addition);
         }
     }
 
@@ -772,11 +746,11 @@ public class Application {
         accounts.add(new Admin(login, name, surname, nickname, email));
     }
 
-    public void displayAllAuctions() {
+    public void ARR_displayAllAuctions() {
         aAuction.displayAllaActions();
     }
 
-    public void removeAProperty() {
+    public void ARR_removeAProperty() {
         String adress = ARR_userStringInput("adress");
         Property toRemove = removeAPropertyByAdress(adress);
         if (toRemove != null) {
@@ -793,16 +767,15 @@ public class Application {
                     toRemove = p;
                     break;
                 }
-            }
+            }    
         } else {
             System.out.println("No properties found.");
         }
         return toRemove;
     }
 
-    public void deleteUser() {
+    public void ARR_deleteUser() {
         String user = ARR_userStringInput("user's login");
-        Account toDelete = null;
         if (currentConnected.getLogin().equals(user)) {
             System.out.println("You can't delete your own account !");
             return;
@@ -849,7 +822,7 @@ public class Application {
        }
    }     
    
-    public void editUser() {
+    public void ARR_editUser() {
         String user = ARR_userStringInput("user's login ");
         boolean find = false;
         if (!accounts.isEmpty()) {
@@ -974,7 +947,7 @@ public class Application {
         return property;
     }
 
-    public void editProperty() {
+    public void ARR_editProperty() {
         Property property = foundPropertyByAdress();
         if (!(property == null)) {
             editPropertyChoice(property);
@@ -1020,52 +993,11 @@ public class Application {
         }
     }
 
-    public void createAuction() {
+    public void ARR_createAuction() {
         Property property = foundPropertyByName();
-        Month.displayEnumTypeOfMonth();
         int nbNight = ARR_userNumericInput(0, 10, "the number of night");
         int choice = ARR_userNumericInput(1, 12, "Which month ? ");
-        Month month = null;
-        switch (choice) {
-            case 1:
-                month = Month.January;
-                break;
-            case 2:
-                month = Month.February;
-                break;
-            case 3:
-                month = Month.March;
-                break;
-            case 4:
-                month = Month.April;
-                break;
-            case 5:
-                month = Month.May;
-                break;
-            case 6:
-                month = Month.June;
-                break;
-            case 7:
-                month = Month.July;
-                break;
-            case 8:
-                month = Month.August;
-                break;
-            case 9:
-                month = Month.September;
-                break;
-            case 10:
-                month = Month.October;
-                break;
-            case 11:
-                month = Month.November;
-                break;
-            case 12:
-                month = Month.December;
-                break;
-            default:
-                break;
-        }
+        Month month = switchMonth();
         if (property.getOwner().getLogin().equals(currentConnected.getName())) {
             setUpAuction((Owner)currentConnected, property, month, nbNight);
             System.out.println("Auction created with sucess");
