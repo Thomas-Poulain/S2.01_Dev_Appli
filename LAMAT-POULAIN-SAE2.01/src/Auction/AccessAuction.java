@@ -53,4 +53,8 @@ public class AccessAuction {
             System.out.println("No auctions find.");
         }
     }
+    
+    public void addSpecificAuction(Auction a){
+        auctions.add(a);
+    }
 }

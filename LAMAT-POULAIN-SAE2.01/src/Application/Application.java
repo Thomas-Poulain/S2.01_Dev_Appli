@@ -163,12 +163,36 @@ public class Application {
         this.walletSociety = walletSociety;
     }
 
+    public void setAccounts(ArrayList<Account> accounts) {
+        this.accounts = accounts;
+    }
+
+    public void setProperties(ArrayList<Property> properties) {
+        this.properties = properties;
+    }
+
+    public void setaAuction(AccessAuction aAuction) {
+        this.aAuction = aAuction;
+    }
+
+    public void setaOffer(AccessOffer aOffer) {
+        this.aOffer = aOffer;
+    }
+
     public ArrayList<Account> getAccounts() {
         return accounts;
     }
 
     public ArrayList<Property> getProperties() {
         return properties;
+    }
+
+    public AccessAuction getaAuction() {
+        return aAuction;
+    }
+
+    public AccessOffer getaOffer() {
+        return aOffer;
     }
 
     public Account getCurrentConnected() {
@@ -779,6 +803,7 @@ public class Application {
         for (Account a : accounts) {
             if (a.getLogin().equals(s)) {
                 toDelete = a;
+                removePropertyFortheDeletedUser(s);
                 break;
             }
         }
@@ -790,6 +815,22 @@ public class Application {
         }
     }
 
+   public void removePropertyFortheDeletedUser(String s){
+       ArrayList<Property> userProperties = new ArrayList<>();
+       if(!properties.isEmpty()){
+           for(Property p : properties){
+               if(p.getOwner().getLogin().equals(s)){
+                   userProperties.add(p);
+               }
+           }
+       }
+       if(!userProperties.isEmpty()){
+           for(Property p2 : userProperties){
+               properties.remove(p2);
+           }
+       }
+   }     
+   
     public void editUser() {
         String user = ARR_userStringInput("user's login ");
         boolean find = false;
@@ -902,9 +943,13 @@ public class Application {
         displayList(adress);
         String a = adress.get(ARR_userNumericInput(0, adress.size() - 1, "Which adress ?"));
 
+        return PropertyByAdress(a);
+    }
+    
+    public Property PropertyByAdress(String s){
         Property property = null;
         for (Property p : properties) {
-            if (p.getAdress().equals(a)) {
+            if (p.getAdress().equals(s)) {
                 property = p;
             }
         }
@@ -1004,13 +1049,17 @@ public class Application {
                 break;
         }
         if (property.getOwner().getLogin().equals(currentConnected.getName())) {
-            aAuction.addAAuction((Owner) currentConnected, property, month, nbNight);
+            setUpAuction((Owner)currentConnected, property, month, nbNight);
             System.out.println("Auction created with sucess");
         } else {
             System.out.println("It's not your own property !");
         }
     }
 
+    public void setUpAuction(Owner o, Property p, Month m, int n){
+        aAuction.addAAuction(o, p, m, n);
+    }
+    
     public void ARR_addProperty() {
         String name = ARR_userStringInput("property's name");
         String town = ARR_userStringInput("property's town ");
@@ -1059,5 +1108,19 @@ public class Application {
             }
         }
         return res;
+    }
+    
+    public Owner foundOwnerByName(String s){
+        Owner exit = null;
+        if(!accounts.isEmpty()){
+            for(Account a:accounts){
+                if(a.getType().equals(TypeOfAccount.OWNER)){
+                    if(a.getLogin().equals(s)){
+                        exit = (Owner)a;
+                    }
+                }
+            }
+        }
+        return exit;
     }
 }
